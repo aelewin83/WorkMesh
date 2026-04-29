@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUncheckedIndexedAccess": true,
+    "baseUrl": ".",
+    "paths": {
+      "@workmesh/types": ["packages/types/src/index.ts"],
+      "@workmesh/matching": ["packages/matching/src/index.ts"],
+      "@workmesh/pricing": ["packages/pricing/src/index.ts"],
+      "@workmesh/crypto": ["packages/crypto/src/index.ts"],
+      "@workmesh/storage": ["packages/storage/src/index.ts"],
+      "@workmesh/ui": ["packages/ui/src/index.ts"]
+    }
+  }
+}

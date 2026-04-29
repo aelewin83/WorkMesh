@@ -1,0 +1,23 @@
+{
+  "name": "workmesh",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WORKMESH decentralized encrypted labor marketplace MVP monorepo.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @workmesh/api --filter @workmesh/web dev",
+    "dev:api": "pnpm --filter @workmesh/api dev",
+    "dev:web": "pnpm --filter @workmesh/web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "test:contracts": "pnpm --dir contracts test",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.12.3"
+}

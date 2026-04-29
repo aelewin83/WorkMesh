@@ -1,0 +1,303 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GigStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum AgreementStatus {
+  PROPOSED
+  ACTIVE
+  COMPLETED
+  DISPUTED
+  CANCELLED
+}
+
+enum NotificationType {
+  SYSTEM
+  MATCH
+  MESSAGE
+  PAYMENT
+  REVIEW
+}
+
+enum FeeType {
+  PLATFORM
+  TREASURY
+  REFERRAL
+}
+
+enum FeeStatus {
+  QUOTED
+  PENDING
+  CAPTURED
+  REFUNDED
+}
+
+enum PaymentRail {
+  PROTECTED_ESCROW
+  ACH
+  CARD
+  WALLET_PROCESSOR
+  STABLECOIN_ESCROW
+  DIRECT
+}
+
+enum SettlementPolicy {
+  PROTECTED_REQUIRED
+  DIRECT_ALLOWED
+  DIRECT_LOCKED
+}
+
+model UserIndex {
+  id               String             @id @default(cuid())
+  wallet           String             @unique
+  handle           String?            @unique
+  displayName      String
+  bio              String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  skills           SkillTag[]         @relation("UserSkills")
+  buyerGigs        GigIndex[]         @relation("BuyerGigs")
+  buyerAgreements  AgreementIndex[]   @relation("BuyerAgreements")
+  workerAgreements AgreementIndex[]   @relation("WorkerAgreements")
+  reputation       ReputationIndex?
+  level            UserLevel?
+  matchScores      MatchScore[]
+  priceQuotes      PriceQuote[]
+  notifications    Notification[]
+  achievements     Achievement[]
+}
+
+model GigIndex {
+  id             String            @id @default(cuid())
+  title          String
+  description    String
+  buyerWallet    String
+  budgetMin      Decimal           @db.Decimal(12, 2)
+  budgetMax      Decimal           @db.Decimal(12, 2)
+  currency       String            @default("USDC")
+  status         GigStatus         @default(OPEN)
+  remote         Boolean           @default(true)
+  region         String?
+  requiredLevel  Int               @default(1)
+  urgency        String            @default("standard")
+  encryptedDetailsRef String?
+  publicDiscoveryMetadata String[]
+  protectedPaymentRequired Boolean @default(true)
+  directSettlementEligible Boolean @default(false)
+  allowedPaymentRails PaymentRail[] @default([PROTECTED_ESCROW, ACH, CARD, WALLET_PROCESSOR, STABLECOIN_ESCROW])
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  buyer          UserIndex         @relation("BuyerGigs", fields: [buyerWallet], references: [wallet])
+  requiredSkills SkillTag[]        @relation("GigSkills")
+  agreements     AgreementIndex[]
+  matchScores    MatchScore[]
+  priceQuotes    PriceQuote[]
+
+  @@index([status, remote])
+  @@index([buyerWallet])
+}
+
+model AgreementIndex {
+  id           String          @id @default(cuid())
+  gigId        String
+  buyerWallet  String
+  workerWallet String
+  status       AgreementStatus @default(PROPOSED)
+  escrowAmount Decimal         @db.Decimal(12, 2)
+  currency     String          @default("USDC")
+  startedAt    DateTime        @default(now())
+  completedAt  DateTime?
+  gig          GigIndex        @relation(fields: [gigId], references: [id])
+  buyer        UserIndex       @relation("BuyerAgreements", fields: [buyerWallet], references: [wallet])
+  worker       UserIndex       @relation("WorkerAgreements", fields: [workerWallet], references: [wallet])
+  feeLedger    FeeLedger[]
+  reviews      ReviewIndex[]
+
+  @@index([buyerWallet])
+  @@index([workerWallet])
+}
+
+model ReputationIndex {
+  wallet          String    @id
+  completedGigs   Int       @default(0)
+  averageRating   Float     @default(0)
+  onTimeRate      Float     @default(0)
+  disputeRate     Float     @default(0)
+  endorsedSkills  String[]
+  updatedAt       DateTime  @updatedAt
+  user            UserIndex @relation(fields: [wallet], references: [wallet])
+}
+
+model UserLevel {
+  wallet      String    @id
+  level       Int       @default(1)
+  xp          Int       @default(0)
+  nextLevelXp Int       @default(500)
+  title       String?
+  tier        String    @default("Bronze")
+  unlockables String[]
+  updatedAt   DateTime  @updatedAt
+  user        UserIndex @relation(fields: [wallet], references: [wallet])
+}
+
+model SkillTag {
+  id        String      @id @default(cuid())
+  name      String
+  slug      String      @unique
+  category  String
+  createdAt DateTime    @default(now())
+  users     UserIndex[] @relation("UserSkills")
+  gigs      GigIndex[]  @relation("GigSkills")
+}
+
+model MatchScore {
+  id        String    @id @default(cuid())
+  wallet    String
+  gigId     String
+  score     Float
+  totalScore Float
+  confidenceScore Float
+  signals   Json
+  explanation String
+  missingRequirements String[]
+  suggestedActions String[]
+  createdAt DateTime  @default(now())
+  user      UserIndex @relation(fields: [wallet], references: [wallet])
+  gig       GigIndex  @relation(fields: [gigId], references: [id])
+
+  @@unique([wallet, gigId])
+  @@index([gigId])
+}
+
+model PriceQuote {
+  id             String       @id @default(cuid())
+  gigId          String?
+  wallet         String?
+  scope          String
+  currency       String       @default("USDC")
+  recommendedMin Decimal      @db.Decimal(12, 2)
+  recommendedMax Decimal      @db.Decimal(12, 2)
+  platformFee    Decimal      @db.Decimal(12, 2)
+  workerReceives Decimal      @db.Decimal(12, 2)
+  buyerPays      Decimal      @db.Decimal(12, 2)
+  suggestedPrice Decimal      @db.Decimal(12, 2)
+  minimumPrice   Decimal      @db.Decimal(12, 2)
+  premiumPrice   Decimal      @db.Decimal(12, 2)
+  marketPressure String       @default("balanced")
+  estimatedGasFee Decimal     @db.Decimal(12, 2)
+  paymentRails   PaymentRail[] @default([PROTECTED_ESCROW, ACH, CARD, WALLET_PROCESSOR, STABLECOIN_ESCROW])
+  settlementPolicy SettlementPolicy @default(PROTECTED_REQUIRED)
+  protectedPaymentReason String[]
+  directSettlementUnlocks String[]
+  explanation    String
+  factors        Json
+  confidence     Float
+  createdAt      DateTime     @default(now())
+  gig            GigIndex?    @relation(fields: [gigId], references: [id])
+  user           UserIndex?   @relation(fields: [wallet], references: [wallet])
+  feeLedger      FeeLedger[]
+
+  @@index([wallet])
+  @@index([gigId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  wallet    String
+  type      NotificationType @default(SYSTEM)
+  title     String
+  encryptedPayload Json
+  plaintextRejected Boolean       @default(false)
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  user      UserIndex        @relation(fields: [wallet], references: [wallet])
+
+  @@index([wallet, read])
+}
+
+model Achievement {
+  id          String    @id @default(cuid())
+  wallet      String
+  key         String
+  title       String
+  description String
+  awardedAt   DateTime  @default(now())
+  user        UserIndex @relation(fields: [wallet], references: [wallet])
+
+  @@unique([wallet, key])
+}
+
+model TreasuryRevenue {
+  id        String   @id @default(cuid())
+  source    String
+  amount    Decimal  @db.Decimal(12, 2)
+  currency  String   @default("USDC")
+  period    String
+  createdAt DateTime @default(now())
+
+  @@index([period])
+}
+
+model FeeLedger {
+  id          String          @id @default(cuid())
+  agreementId String?
+  quoteId     String?
+  payerWallet String
+  payeeWallet String
+  feeType     FeeType         @default(PLATFORM)
+  amount      Decimal         @db.Decimal(12, 2)
+  currency    String          @default("USDC")
+  status      FeeStatus       @default(PENDING)
+  createdAt   DateTime        @default(now())
+  agreement   AgreementIndex? @relation(fields: [agreementId], references: [id])
+  quote       PriceQuote?     @relation(fields: [quoteId], references: [id])
+
+  @@index([payerWallet])
+  @@index([payeeWallet])
+  @@index([status])
+}
+
+model MessageThread {
+  id            String    @id @default(cuid())
+  participants  String[]
+  lastMessageAt DateTime  @default(now())
+  messages      Message[]
+}
+
+model Message {
+  id        String        @id @default(cuid())
+  threadId  String
+  fromWallet String
+  toWallet   String
+  body      String
+  createdAt DateTime      @default(now())
+  thread    MessageThread @relation(fields: [threadId], references: [id])
+
+  @@index([threadId, createdAt])
+}
+
+model ReviewIndex {
+  id             String          @id @default(cuid())
+  agreementId    String?
+  reviewerWallet String
+  revieweeWallet String
+  rating         Int
+  comment        String?
+  skillSlugs     String[]
+  createdAt      DateTime        @default(now())
+  agreement      AgreementIndex? @relation(fields: [agreementId], references: [id])
+
+  @@index([revieweeWallet])
+  @@index([reviewerWallet])
+}

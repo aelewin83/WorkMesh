@@ -1,0 +1,16 @@
+{
+  "name": "workmesh-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Solidity MVP contracts for WorkMesh registry, agreements, escrow, and reputation.",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js",
+    "gas": "REPORT_GAS=true hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.19"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@workmesh/types",
+  "version": "0.1.0",
+  "description": "Shared WorkMesh entities, DTOs, and formula result contracts.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test --import tsx test/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
+  }
+}
