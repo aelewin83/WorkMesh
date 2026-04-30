@@ -4,10 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:mock": "NEXT_PUBLIC_DATA_MODE=mock next dev",
+    "dev:api": "NEXT_PUBLIC_DATA_MODE=api next dev",
     "start": "next start",
     "build": "next build",
+    "build:mock": "NEXT_PUBLIC_DATA_MODE=mock next build",
+    "build:api": "NEXT_PUBLIC_DATA_MODE=api next build",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:api": "NEXT_PUBLIC_DATA_MODE=api next build && node --test tests/api-contract.test.mjs",
+    "test:watch": "node --test --watch tests/api-contract.test.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "1.1.4",

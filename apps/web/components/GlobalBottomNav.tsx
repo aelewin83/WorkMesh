@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Bell, BriefcaseBusiness, Home, UserRound, WalletCards } from "lucide-react";
 
 type Role = "contractor" | "employer" | "admin";
@@ -44,14 +45,23 @@ const linksForRole = (role: Role) => {
 
 export function GlobalBottomNav() {
   const pathname = usePathname();
+  const [hash, setHash] = useState("");
   const role = roleFromPath(pathname);
   const links = linksForRole(role);
+
+  useEffect(() => {
+    const updateHash = () => setHash(window.location.hash);
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, []);
 
   return (
     <nav className="fixed inset-x-3 bottom-3 z-[80] grid grid-cols-5 gap-1 rounded-3xl border border-border-2 bg-bg-1/95 p-1.5 shadow-card backdrop-blur-xl md:hidden">
       {links.map(({ label, href, Icon }) => {
         const basePath = href.split("#")[0];
-        const active = basePath === pathname || (href === "/" && pathname === "/");
+        const hrefHash = href.includes("#") ? `#${href.split("#")[1]}` : "";
+        const active = hrefHash ? basePath === pathname && hrefHash === hash : basePath === pathname || (href === "/" && pathname === "/");
 
         return (
           <Link

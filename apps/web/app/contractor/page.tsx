@@ -31,6 +31,7 @@ import {
   StatusPanel,
   WorkflowGrid
 } from "@/components/PremiumDashboard";
+import { ContractorMobileConsole } from "@/components/ContractorMobileConsole";
 
 const gigs = [
   {
@@ -68,7 +69,7 @@ export default function ContractorPage() {
       ctaHref="/contractor#recommended-gigs"
       paymentsHref="/contractor#payments"
       profile={{ name: "Operator K-914", detail: "Elite contractor" }}
-      mobileHero={<ContractorMobileDashboard />}
+      mobileHero={<ContractorMobileConsole />}
     >
       <HeroProfile
         avatar="K"

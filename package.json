@@ -8,12 +8,19 @@
     "dev": "pnpm --parallel --filter @workmesh/api --filter @workmesh/web dev",
     "dev:api": "pnpm --filter @workmesh/api dev",
     "dev:web": "pnpm --filter @workmesh/web dev",
+    "dev:web:mock": "pnpm --filter @workmesh/web dev:mock",
+    "dev:web:api": "pnpm --filter @workmesh/web dev:api",
     "build": "pnpm -r build",
+    "build:web:mock": "pnpm --filter @workmesh/web build:mock",
+    "build:web:api": "pnpm --filter @workmesh/web build:api",
     "test": "pnpm -r test",
+    "test:api": "pnpm --filter @workmesh/web test:api",
     "test:contracts": "pnpm --dir contracts test",
+    "test:watch": "pnpm --filter @workmesh/web test:watch",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "npm --prefix apps/api run typecheck && npm --prefix packages/ui run typecheck",
+    "verify": "pnpm typecheck && pnpm test:api && pnpm test:contracts && pnpm build:web:api && pnpm build:web:mock"
   },
   "engines": {
     "node": ">=20.11.0",

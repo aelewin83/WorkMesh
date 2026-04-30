@@ -21,3 +21,5 @@ apps/**/node_modules
 packages/**/node_modules
 packages/**/dist
 apps/**/dist
+.workmesh-dev
+apps/web/.workmesh-dev
