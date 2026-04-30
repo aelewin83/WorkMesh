@@ -46,6 +46,7 @@ const linksForRole = (role: Role) => {
 export function GlobalBottomNav() {
   const pathname = usePathname();
   const [hash, setHash] = useState("");
+  const showBottomNav = pathname.startsWith("/contractor") || pathname.startsWith("/employer") || pathname.startsWith("/admin");
   const role = roleFromPath(pathname);
   const links = linksForRole(role);
 
@@ -55,6 +56,8 @@ export function GlobalBottomNav() {
     window.addEventListener("hashchange", updateHash);
     return () => window.removeEventListener("hashchange", updateHash);
   }, []);
+
+  if (!showBottomNav) return null;
 
   return (
     <nav className="fixed inset-x-3 bottom-3 z-[80] grid grid-cols-5 gap-1 rounded-3xl border border-border-2 bg-bg-1/95 p-1.5 shadow-card backdrop-blur-xl md:hidden">
