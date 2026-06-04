@@ -4,6 +4,7 @@ dist
 .env
 .env.local
 .env.*.local
+.env.testnet
 .cache
 .turbo
 coverage
@@ -23,3 +24,6 @@ packages/**/dist
 apps/**/dist
 .workmesh-dev
 apps/web/.workmesh-dev
+
+.relai-dev
+apps/web/.relai-dev

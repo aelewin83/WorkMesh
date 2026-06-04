@@ -9,7 +9,7 @@ export function LevelProgressBar({
   level,
   xp,
   nextXp,
-  label = "Operator level"
+  label = "Trust level"
 }: LevelProgressBarProps) {
   const progress = Math.min(100, Math.round((xp / nextXp) * 100));
 

@@ -1,5 +1,5 @@
 {
-  "name": "@workmesh/web",
+  "name": "@relai/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -18,10 +18,12 @@
   "dependencies": {
     "@radix-ui/react-dialog": "1.1.4",
     "@tanstack/react-query": "5.62.7",
+    "@types/pg": "^8.20.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "0.468.0",
     "next": "14.2.16",
+    "pg": "^8.20.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tailwind-merge": "2.5.5",

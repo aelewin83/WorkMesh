@@ -1,0 +1,18 @@
+{
+  "deployer": "0x486232dc7B34659e9b3200126B87c72b751719e5",
+  "platformFeeBps": 500,
+  "treasuryWallet": "0x486232dc7B34659e9b3200126B87c72b751719e5",
+  "escrowAdmins": [
+    "0x486232dc7B34659e9b3200126B87c72b751719e5"
+  ],
+  "escrowAdminThreshold": 1,
+  "reputationAdmin": "0x486232dc7B34659e9b3200126B87c72b751719e5",
+  "network": "baseSepolia",
+  "chainId": 84532,
+  "contracts": {
+    "gigRegistry": "0x3e04eFd36c2D9f6f4260740F2C68D2142Fe777a0",
+    "workAgreement": "0xeBDC46a31176A05713ec94E4711F57134BBA2bDa",
+    "escrow": "0xcE589bc7aDCc2Ca48Ac6B4683AF8f2B712FfC414",
+    "reputation": "0xeE00ea140ba676CD94A39C57a8fC78143c29b78C"
+  }
+}

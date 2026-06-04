@@ -1,8 +1,8 @@
 "use client";
 
-export type WorkMeshDataMode = "mock" | "api";
+export type RelaiDataMode = "mock" | "api";
 
-export function getDataMode(): WorkMeshDataMode {
+export function getDataMode(): RelaiDataMode {
   return process.env.NEXT_PUBLIC_DATA_MODE === "api" ? "api" : "mock";
 }
 

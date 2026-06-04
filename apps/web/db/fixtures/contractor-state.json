@@ -1,0 +1,880 @@
+{
+  "gigs": [
+    {
+      "id": "dock",
+      "pay": 148,
+      "title": "Same-day inventory movement support",
+      "client": "Harbor Supply Node",
+      "status": "completed",
+      "urgency": "surge",
+      "category": "logistics-transport",
+      "currency": "USD",
+      "createdAt": "2026-05-13T07:28:17.632Z",
+      "updatedAt": "2026-05-13T07:29:26.916Z",
+      "verticals": [
+        "logistics-transport"
+      ],
+      "timeWindow": "21:00",
+      "coordinates": {
+        "lat": 40.732,
+        "lng": -74
+      },
+      "locationMode": "local",
+      "distanceMiles": 1.2,
+      "requiredLevel": 4,
+      "employerWallet": "0xHarbor...9910",
+      "escrowRequired": true,
+      "requiredSkills": [
+        "Lift",
+        "Dock",
+        "Scan",
+        "Logistics"
+      ],
+      "applicantWallets": [
+        "0xK914...7F21"
+      ],
+      "contractorWallet": "0xK914...7F21",
+      "descriptionPreview": "Same-day inventory movement support for Harbor Supply Node",
+      "encryptedDetailsRef": "local-encrypted-gig://dock"
+    },
+    {
+      "id": "fixture",
+      "pay": 92,
+      "title": "Executive office coordination support",
+      "client": "Northline Retail",
+      "status": "applied",
+      "urgency": "priority",
+      "category": "executive-assistance-coordination",
+      "currency": "USD",
+      "createdAt": "2026-05-13T07:28:17.632Z",
+      "updatedAt": "2026-05-13T07:29:26.848Z",
+      "verticals": [
+        "executive-assistance-coordination"
+      ],
+      "timeWindow": "18:30",
+      "coordinates": {
+        "lat": 40.726,
+        "lng": -74
+      },
+      "locationMode": "local",
+      "distanceMiles": 0.6,
+      "requiredLevel": 3,
+      "employerWallet": "0xHarbor...9910",
+      "escrowRequired": true,
+      "requiredSkills": [
+        "Tools",
+        "Photo proof",
+        "Inspection"
+      ],
+      "applicantWallets": [
+        "0xK914...7F21"
+      ],
+      "descriptionPreview": "Executive office coordination support for Northline Retail",
+      "encryptedDetailsRef": "local-encrypted-gig://fixture"
+    },
+    {
+      "id": "event",
+      "pay": 225,
+      "title": "Private event staffing lead",
+      "client": "Civic Hall Ops",
+      "status": "available",
+      "urgency": "standard",
+      "category": "events-staffing",
+      "currency": "USD",
+      "createdAt": "2026-05-13T07:28:17.632Z",
+      "updatedAt": "2026-05-13T07:28:17.632Z",
+      "verticals": [
+        "events-staffing"
+      ],
+      "timeWindow": "23:15",
+      "coordinates": {
+        "lat": 40.748,
+        "lng": -74
+      },
+      "locationMode": "local",
+      "distanceMiles": 2.8,
+      "requiredLevel": 6,
+      "employerWallet": "0xHarbor...9910",
+      "escrowRequired": false,
+      "requiredSkills": [
+        "Crew",
+        "Coordination",
+        "Physical labor"
+      ],
+      "applicantWallets": [],
+      "descriptionPreview": "Private event staffing lead for Civic Hall Ops",
+      "encryptedDetailsRef": "local-encrypted-gig://event"
+    },
+    {
+      "id": "model",
+      "pay": 420,
+      "title": "Confidential research and analysis review",
+      "client": "Private advisory desk",
+      "status": "available",
+      "urgency": "priority",
+      "category": "research-analysis-advisory",
+      "currency": "USD",
+      "createdAt": "2026-05-13T07:28:17.632Z",
+      "updatedAt": "2026-05-13T07:28:17.632Z",
+      "verticals": [
+        "research-analysis-advisory"
+      ],
+      "timeWindow": "Remote",
+      "coordinates": {
+        "lat": 40.72,
+        "lng": -74
+      },
+      "locationMode": "remote",
+      "distanceMiles": 0,
+      "requiredLevel": 3,
+      "employerWallet": "0xHarbor...9910",
+      "escrowRequired": true,
+      "requiredSkills": [
+        "Financial modeling",
+        "Data analysis"
+      ],
+      "applicantWallets": [],
+      "descriptionPreview": "Confidential research and analysis review for Private advisory desk",
+      "encryptedDetailsRef": "local-encrypted-gig://model"
+    }
+  ],
+  "escrow": {
+    "status": "pending_release",
+    "txHash": "0xmockfunded",
+    "chainId": 31337,
+    "fundedAt": "2026-05-13T07:28:17.638Z",
+    "netPayout": 135.86,
+    "updatedAt": "2026-05-13T07:29:26.916Z",
+    "agreementId": "agr_dock",
+    "gasEstimate": 3.44,
+    "grossAmount": 148,
+    "platformFee": 12.14,
+    "treasuryWallet": "0xTreasury...FEE5"
+  },
+  "profile": {
+    "walletAddress": "0xK914...7F21",
+    "handle": "K-914",
+    "initials": "K",
+    "publicKey": "x25519_mock_api_k914",
+    "signingPublicKey": "ed25519_mock_api_k914",
+    "publicFields": {
+      "initials": "K",
+      "approximateRegion": "NYC-03",
+      "rating": 4.96,
+      "trustScore": 98,
+      "levelName": "Trusted contributor"
+    },
+    "encryptedPrivateBlobRef": "local-encrypted-profile://operator-k914",
+    "level": 5,
+    "xp": 8420,
+    "xpNext": 10000,
+    "streakDays": 19,
+    "trustScore": 98,
+    "verticals": [
+      "logistics-transport",
+      "executive-assistance-coordination",
+      "research-analysis-advisory"
+    ],
+    "skills": [
+      "Driving",
+      "Logistics",
+      "Auditing",
+      "Inspection",
+      "Operational administration",
+      "Lift",
+      "Dock",
+      "Scan",
+      "Tools",
+      "Photo proof",
+      "Financial modeling"
+    ],
+    "customSkills": [],
+    "useCasePreferences": [
+      "Pickups/drop-offs",
+      "Inventory checks",
+      "Field audits",
+      "Inspections"
+    ],
+    "skillDetails": [
+      {
+        "id": "driving",
+        "label": "Driving",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "logistics-transport",
+        "label": "Logistics",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "auditing",
+        "label": "Auditing",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "inspection",
+        "label": "Inspection",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "property-management",
+        "label": "Operational administration",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "lift",
+        "label": "Lift",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "dock",
+        "label": "Dock",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "scan",
+        "label": "Scan",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "tools",
+        "label": "Tools",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      },
+      {
+        "id": "photo-proof",
+        "label": "Photo proof",
+        "category": "logistics-transport",
+        "proficiencyLevel": "capable"
+      }
+    ],
+    "categories": [
+      "logistics-transport",
+      "executive-assistance-coordination",
+      "research-analysis-advisory"
+    ],
+    "serviceCategories": [
+      "logistics-transport",
+      "executive-assistance-coordination",
+      "research-analysis-advisory"
+    ],
+    "experienceLevel": "1_3",
+    "certifications": [],
+    "licenses": [],
+    "availability": "ready_now",
+    "availabilityDetails": {
+      "availableNow": true,
+      "sameDay": true,
+      "recurring": false,
+      "weeklySchedule": [
+        "Mon PM",
+        "Wed PM",
+        "Sat AM"
+      ],
+      "timezone": "America/New_York"
+    },
+    "region": {
+      "country": "US",
+      "state": "",
+      "city": "",
+      "metro": "NYC-03",
+      "serviceRadiusMiles": 10,
+      "locationMode": "local",
+      "preciseLocationShared": false
+    },
+    "workPreference": "local",
+    "privacySettings": {
+      "realName": false,
+      "phone": false,
+      "email": false,
+      "preciseLocation": false,
+      "portfolio": false,
+      "credentials": true
+    },
+    "profileVisibility": {
+      "showHandle": true,
+      "showSkills": true,
+      "showRegion": true,
+      "showRating": true,
+      "showAvailability": true,
+      "showExactLocation": false,
+      "showRealName": false,
+      "showPhone": false,
+      "showEmail": false,
+      "requireConfirmationBeforeDisclosure": true
+    },
+    "disclosureSettings": {
+      "realName": false,
+      "phone": false,
+      "email": false,
+      "preciseLocation": false,
+      "portfolio": false,
+      "credentials": true
+    },
+    "publicProfileFields": [
+      "handle",
+      "skills",
+      "region",
+      "rating",
+      "availability"
+    ],
+    "onboardingCompleted": false,
+    "createdAt": "2026-05-13T07:28:17.632Z",
+    "updatedAt": "2026-05-13T07:29:26.830Z"
+  },
+  "threads": [
+    {
+      "id": "thread_dock",
+      "gigId": "dock",
+      "updatedAt": "2026-05-13T07:29:26.948Z",
+      "agreementId": "agr_dock",
+      "unreadCount": 0,
+      "lastMessagePreview": "encrypted:postgres-validatio",
+      "participantWallets": [
+        "0xK914...7F21",
+        "0xHarbor...9910"
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_employer_1",
+      "status": "delivered",
+      "threadId": "thread_dock",
+      "createdAt": "2026-05-13T07:28:17.638Z",
+      "senderWallet": "0xHarbor...9910",
+      "attachmentRefs": [],
+      "encryptedPayload": "encrypted:Escrow is locked. Gate code is visible to your device."
+    },
+    {
+      "id": "msg_worker_1",
+      "status": "delivered",
+      "threadId": "thread_dock",
+      "createdAt": "2026-05-13T07:28:17.638Z",
+      "senderWallet": "0xK914...7F21",
+      "attachmentRefs": [],
+      "encryptedPayload": "encrypted:On site in 18 minutes."
+    },
+    {
+      "id": "msg_coue9oai",
+      "readAt": "2026-05-13T07:29:26.948Z",
+      "status": "read",
+      "threadId": "thread_dock",
+      "createdAt": "2026-05-13T07:29:26.930Z",
+      "senderWallet": "0xK914...7F21",
+      "attachmentRefs": [
+        "encrypted-proof://postgres-validation"
+      ],
+      "encryptedPayload": "encrypted:postgres-validation"
+    }
+  ],
+  "agreement": {
+    "id": "agr_dock",
+    "gigId": "dock",
+    "status": "pending_employer_confirmation",
+    "termsRef": "local-encrypted-terms://agr_dock",
+    "arrivedAt": "2026-05-13T07:29:26.883Z",
+    "proofRefs": [
+      "encrypted-proof://postgres-validation"
+    ],
+    "startedAt": "2026-05-13T07:29:26.897Z",
+    "acceptedAt": "2026-05-13T07:29:26.868Z",
+    "proofNotes": [
+      "Postgres persistence validation proof"
+    ],
+    "completedAt": "2026-05-13T07:29:26.909Z",
+    "termsPreview": [
+      "Protected escrow required",
+      "Arrival ping required",
+      "Photo/checklist proof required",
+      "Employer review before release"
+    ],
+    "employerWallet": "0xHarbor...9910",
+    "contractorWallet": "0xK914...7F21"
+  },
+  "notifications": [
+    {
+      "id": "note_ukuolilb",
+      "body": "Snapshot write confirmed.",
+      "read": false,
+      "type": "escrow_funded",
+      "title": "Postgres validation",
+      "target": "#mobile-pay",
+      "createdAt": "2026-05-13T07:29:26.960Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "agr_dock",
+      "relatedEntityType": "gig"
+    },
+    {
+      "id": "note_rhyu49e6",
+      "body": "Encrypted reply delivered.",
+      "read": true,
+      "type": "message_received",
+      "title": "Message delivered",
+      "target": "#mobile-chat",
+      "createdAt": "2026-05-13T07:29:26.930Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "msg_coue9oai",
+      "relatedEntityType": "message"
+    },
+    {
+      "id": "note_uy00hhvm",
+      "body": "Completion proof is waiting for employer confirmation.",
+      "read": false,
+      "type": "completion_approved",
+      "title": "Proof submitted",
+      "target": "#mobile-agreement",
+      "createdAt": "2026-05-13T07:29:26.916Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "agr_dock",
+      "relatedEntityType": "agreement"
+    },
+    {
+      "id": "note_wpsx2yvl",
+      "body": "Same-day inventory movement support is now completed.",
+      "read": false,
+      "type": "gig_matched",
+      "title": "Gig updated",
+      "target": "#mobile-gigs",
+      "createdAt": "2026-05-13T07:29:26.916Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "dock",
+      "relatedEntityType": "gig"
+    },
+    {
+      "id": "note_oc3f4si5",
+      "body": "Agreement status is now in progress.",
+      "read": false,
+      "type": "agreement_ready",
+      "title": "Agreement updated",
+      "target": "#mobile-agreement",
+      "createdAt": "2026-05-13T07:29:26.903Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "agr_dock",
+      "relatedEntityType": "agreement"
+    },
+    {
+      "id": "note_037a9ocj",
+      "body": "Same-day inventory movement support is now in progress.",
+      "read": false,
+      "type": "gig_matched",
+      "title": "Gig updated",
+      "target": "#mobile-gigs",
+      "createdAt": "2026-05-13T07:29:26.903Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "dock",
+      "relatedEntityType": "gig"
+    },
+    {
+      "id": "note_7d8cscen",
+      "body": "Agreement status is now arrived.",
+      "read": false,
+      "type": "agreement_ready",
+      "title": "Agreement updated",
+      "target": "#mobile-agreement",
+      "createdAt": "2026-05-13T07:29:26.889Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "agr_dock",
+      "relatedEntityType": "agreement"
+    },
+    {
+      "id": "note_rniip50c",
+      "body": "Agreement status is now accepted.",
+      "read": false,
+      "type": "agreement_ready",
+      "title": "Agreement updated",
+      "target": "#mobile-agreement",
+      "createdAt": "2026-05-13T07:29:26.879Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "agr_dock",
+      "relatedEntityType": "agreement"
+    },
+    {
+      "id": "note_ihxla0za",
+      "body": "Same-day inventory movement support is now claimed.",
+      "read": false,
+      "type": "agreement_ready",
+      "title": "Agreement ready",
+      "target": "#mobile-agreement",
+      "createdAt": "2026-05-13T07:29:26.863Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "dock",
+      "relatedEntityType": "gig"
+    },
+    {
+      "id": "note_w7zwgcs1",
+      "body": "Executive office coordination support is now applied.",
+      "read": false,
+      "type": "gig_matched",
+      "title": "Gig updated",
+      "target": "#mobile-gigs",
+      "createdAt": "2026-05-13T07:29:26.848Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "fixture",
+      "relatedEntityType": "gig"
+    },
+    {
+      "id": "note_7kkyeuiy",
+      "body": "Contractor profile changes were saved.",
+      "read": true,
+      "type": "level_unlocked",
+      "title": "Profile updated",
+      "target": "#mobile-profile",
+      "createdAt": "2026-05-13T07:29:26.831Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "0xK914...7F21",
+      "relatedEntityType": "profile"
+    },
+    {
+      "id": "note_h66revm9",
+      "body": "Inventory movement support is a 96% fit.",
+      "read": false,
+      "type": "gig_matched",
+      "title": "Priority gig nearby",
+      "target": "#mobile-gigs",
+      "createdAt": "2026-05-13T07:28:17.638Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "dock",
+      "relatedEntityType": "gig"
+    },
+    {
+      "id": "note_kwyt21i6",
+      "body": "$148 is locked for Harbor Supply.",
+      "read": false,
+      "type": "escrow_funded",
+      "title": "Escrow funded",
+      "target": "#mobile-pay",
+      "createdAt": "2026-05-13T07:28:17.638Z",
+      "walletAddress": "0xK914...7F21",
+      "relatedEntityId": "agr_dock",
+      "relatedEntityType": "payment"
+    }
+  ],
+  "payoutHistory": [
+    {
+      "id": "pay_agr_dock_pending",
+      "label": "Pending payout",
+      "amount": 135.86,
+      "status": "pending_release",
+      "createdAt": "2026-05-13T07:29:26.916Z",
+      "agreementId": "agr_dock",
+      "walletAddress": "0xK914...7F21"
+    },
+    {
+      "id": "pay_seed",
+      "label": "Prior payout",
+      "amount": 214,
+      "status": "released",
+      "createdAt": "2026-05-13T07:28:17.632Z",
+      "agreementId": "agr_dock",
+      "walletAddress": "0xK914...7F21"
+    }
+  ],
+  "disclosureAudit": [
+    {
+      "id": "audit_seed",
+      "purpose": "Verified skill proof for dock work",
+      "createdAt": "2026-05-13T07:28:17.632Z",
+      "agreementId": "agr_dock",
+      "walletAddress": "0xK914...7F21",
+      "disclosedFields": [
+        "credentials"
+      ],
+      "recipientWallet": "0xHarbor...9910"
+    }
+  ],
+  "recommendations": [
+    {
+      "gig": {
+        "id": "dock",
+        "pay": 148,
+        "title": "Same-day inventory movement support",
+        "client": "Harbor Supply Node",
+        "status": "completed",
+        "urgency": "surge",
+        "category": "logistics-transport",
+        "currency": "USD",
+        "createdAt": "2026-05-13T07:28:17.632Z",
+        "updatedAt": "2026-05-13T07:29:26.916Z",
+        "verticals": [
+          "logistics-transport"
+        ],
+        "timeWindow": "21:00",
+        "coordinates": {
+          "lat": 40.732,
+          "lng": -74
+        },
+        "locationMode": "local",
+        "distanceMiles": 1.2,
+        "requiredLevel": 4,
+        "employerWallet": "0xHarbor...9910",
+        "escrowRequired": true,
+        "requiredSkills": [
+          "Lift",
+          "Dock",
+          "Scan",
+          "Logistics"
+        ],
+        "applicantWallets": [
+          "0xK914...7F21"
+        ],
+        "contractorWallet": "0xK914...7F21",
+        "descriptionPreview": "Same-day inventory movement support for Harbor Supply Node",
+        "encryptedDetailsRef": "local-encrypted-gig://dock"
+      },
+      "matchScore": {
+        "totalScore": 100,
+        "confidenceScore": 98,
+        "scoreBreakdown": {
+          "verticalFit": 14,
+          "skillFit": 22,
+          "proximity": 13,
+          "levelEligibility": 16,
+          "rating": 10,
+          "availability": 10,
+          "completionHistory": 10,
+          "priceFit": 8,
+          "responseSpeed": 8
+        },
+        "whyMatched": [
+          "Matched because you selected logistics-transport.",
+          "Matched skills: Lift, Dock, Scan.",
+          "Matched because your trust score qualifies you for private tasks."
+        ],
+        "explanation": "Matched because you selected logistics-transport. Matched skills: Lift, Dock, Scan. Matched because your trust score qualifies you for private tasks.",
+        "missingRequirements": [],
+        "suggestedActions": [
+          "Claim while escrow is funded",
+          "Send ETA in encrypted chat"
+        ],
+        "suggestedUnlockActions": [
+          "Claim while escrow is funded",
+          "Send ETA in encrypted chat"
+        ],
+        "levelUnlockStatus": "eligible"
+      }
+    },
+    {
+      "gig": {
+        "id": "fixture",
+        "pay": 92,
+        "title": "Executive office coordination support",
+        "client": "Northline Retail",
+        "status": "applied",
+        "urgency": "priority",
+        "category": "executive-assistance-coordination",
+        "currency": "USD",
+        "createdAt": "2026-05-13T07:28:17.632Z",
+        "updatedAt": "2026-05-13T07:29:26.848Z",
+        "verticals": [
+          "executive-assistance-coordination"
+        ],
+        "timeWindow": "18:30",
+        "coordinates": {
+          "lat": 40.726,
+          "lng": -74
+        },
+        "locationMode": "local",
+        "distanceMiles": 0.6,
+        "requiredLevel": 3,
+        "employerWallet": "0xHarbor...9910",
+        "escrowRequired": true,
+        "requiredSkills": [
+          "Tools",
+          "Photo proof",
+          "Inspection"
+        ],
+        "applicantWallets": [
+          "0xK914...7F21"
+        ],
+        "descriptionPreview": "Executive office coordination support for Northline Retail",
+        "encryptedDetailsRef": "local-encrypted-gig://fixture"
+      },
+      "matchScore": {
+        "totalScore": 100,
+        "confidenceScore": 98,
+        "scoreBreakdown": {
+          "verticalFit": 14,
+          "skillFit": 22,
+          "proximity": 16,
+          "levelEligibility": 16,
+          "rating": 10,
+          "availability": 10,
+          "completionHistory": 10,
+          "priceFit": 6,
+          "responseSpeed": 8
+        },
+        "whyMatched": [
+          "Matched because you selected executive-assistance-coordination.",
+          "Matched skills: Tools, Photo proof, Inspection.",
+          "Matched because your trust score qualifies you for private tasks."
+        ],
+        "explanation": "Matched because you selected executive-assistance-coordination. Matched skills: Tools, Photo proof, Inspection. Matched because your trust score qualifies you for private tasks.",
+        "missingRequirements": [],
+        "suggestedActions": [
+          "Claim while escrow is funded",
+          "Send ETA in encrypted chat"
+        ],
+        "suggestedUnlockActions": [
+          "Claim while escrow is funded",
+          "Send ETA in encrypted chat"
+        ],
+        "levelUnlockStatus": "eligible"
+      }
+    },
+    {
+      "gig": {
+        "id": "model",
+        "pay": 420,
+        "title": "Confidential research and analysis review",
+        "client": "Private advisory desk",
+        "status": "available",
+        "urgency": "priority",
+        "category": "research-analysis-advisory",
+        "currency": "USD",
+        "createdAt": "2026-05-13T07:28:17.632Z",
+        "updatedAt": "2026-05-13T07:28:17.632Z",
+        "verticals": [
+          "research-analysis-advisory"
+        ],
+        "timeWindow": "Remote",
+        "coordinates": {
+          "lat": 40.72,
+          "lng": -74
+        },
+        "locationMode": "remote",
+        "distanceMiles": 0,
+        "requiredLevel": 3,
+        "employerWallet": "0xHarbor...9910",
+        "escrowRequired": true,
+        "requiredSkills": [
+          "Financial modeling",
+          "Data analysis"
+        ],
+        "applicantWallets": [],
+        "descriptionPreview": "Confidential research and analysis review for Private advisory desk",
+        "encryptedDetailsRef": "local-encrypted-gig://model"
+      },
+      "matchScore": {
+        "totalScore": 97,
+        "confidenceScore": 98,
+        "scoreBreakdown": {
+          "verticalFit": 14,
+          "skillFit": 11,
+          "proximity": 8,
+          "levelEligibility": 16,
+          "rating": 10,
+          "availability": 10,
+          "completionHistory": 10,
+          "priceFit": 10,
+          "responseSpeed": 8
+        },
+        "whyMatched": [
+          "Matched because you selected research-analysis-advisory.",
+          "Matched skills: Financial modeling.",
+          "Matched because your trust score qualifies you for private tasks."
+        ],
+        "explanation": "Matched because you selected research-analysis-advisory. Matched skills: Financial modeling. Matched because your trust score qualifies you for private tasks.",
+        "missingRequirements": [
+          "Missing skill: Data analysis"
+        ],
+        "suggestedActions": [
+          "Add Data analysis to your skills or complete a verified proof.",
+          "Improve response time and complete profile verification when available."
+        ],
+        "suggestedUnlockActions": [
+          "Add Data analysis to your skills or complete a verified proof.",
+          "Improve response time and complete profile verification when available."
+        ],
+        "levelUnlockStatus": "needs_profile_update"
+      }
+    },
+    {
+      "gig": {
+        "id": "event",
+        "pay": 225,
+        "title": "Private event staffing lead",
+        "client": "Civic Hall Ops",
+        "status": "available",
+        "urgency": "standard",
+        "category": "events-staffing",
+        "currency": "USD",
+        "createdAt": "2026-05-13T07:28:17.632Z",
+        "updatedAt": "2026-05-13T07:28:17.632Z",
+        "verticals": [
+          "events-staffing"
+        ],
+        "timeWindow": "23:15",
+        "coordinates": {
+          "lat": 40.748,
+          "lng": -74
+        },
+        "locationMode": "local",
+        "distanceMiles": 2.8,
+        "requiredLevel": 6,
+        "employerWallet": "0xHarbor...9910",
+        "escrowRequired": false,
+        "requiredSkills": [
+          "Crew",
+          "Coordination",
+          "Physical labor"
+        ],
+        "applicantWallets": [],
+        "descriptionPreview": "Private event staffing lead for Civic Hall Ops",
+        "encryptedDetailsRef": "local-encrypted-gig://event"
+      },
+      "matchScore": {
+        "totalScore": 68,
+        "confidenceScore": 72,
+        "scoreBreakdown": {
+          "verticalFit": 4,
+          "skillFit": 0,
+          "proximity": 13,
+          "levelEligibility": 3,
+          "rating": 10,
+          "availability": 10,
+          "completionHistory": 10,
+          "priceFit": 10,
+          "responseSpeed": 8
+        },
+        "whyMatched": [
+          "Matched because your trust score qualifies you for private tasks."
+        ],
+        "explanation": "Matched because your trust score qualifies you for private tasks.",
+        "missingRequirements": [
+          "Requires Level 6",
+          "Missing skill: Crew",
+          "Missing skill: Coordination",
+          "Missing skill: Physical labor"
+        ],
+        "suggestedActions": [
+          "Complete 1 more verified gig(s) to unlock Level 6.",
+          "Add Crew to your skills or complete a verified proof.",
+          "Add Coordination to your skills or complete a verified proof.",
+          "Improve response time and complete profile verification when available."
+        ],
+        "suggestedUnlockActions": [
+          "Complete 1 more verified gig(s) to unlock Level 6.",
+          "Add Crew to your skills or complete a verified proof.",
+          "Add Coordination to your skills or complete a verified proof.",
+          "Improve response time and complete profile verification when available."
+        ],
+        "levelUnlockStatus": "needs_profile_update",
+        "levelUnlock": {
+          "missingLevel": 6,
+          "xpNeeded": 1580,
+          "action": "Complete verified work to reach Level 6"
+        }
+      }
+    }
+  ]
+}

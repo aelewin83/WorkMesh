@@ -1,4 +1,6 @@
-const { ethers } = require("hardhat");
+const { ethers, network } = require("hardhat");
+const { mkdirSync, writeFileSync } = require("node:fs");
+const path = require("node:path");
 
 function parseAddressList(value, fallback) {
   if (!value || value.trim() === "") {
@@ -51,26 +53,30 @@ async function main() {
   const reputation = await Reputation.deploy(reputationAdmin);
   await reputation.waitForDeployment();
 
-  console.log(
-    JSON.stringify(
-      {
+  const deployment = {
         deployer: deployer.address,
         platformFeeBps,
         treasuryWallet,
         escrowAdmins,
         escrowAdminThreshold,
         reputationAdmin,
+        network: network.name,
+        chainId: network.config.chainId,
         contracts: {
           gigRegistry: await registry.getAddress(),
           workAgreement: await agreements.getAddress(),
           escrow: await escrow.getAddress(),
           reputation: await reputation.getAddress()
         }
-      },
-      null,
-      2
-    )
+  };
+
+  const deploymentsDir = path.join(__dirname, "..", "deployments");
+  mkdirSync(deploymentsDir, { recursive: true });
+  writeFileSync(
+    path.join(deploymentsDir, `${network.name}-${network.config.chainId || "unknown"}.json`),
+    JSON.stringify(deployment, null, 2) + "\n"
   );
+  console.log(JSON.stringify(deployment, null, 2));
 }
 
 main().catch((error) => {

@@ -6,6 +6,7 @@ import type {
   ContractorGigDto,
   ContractorGigStatus,
   ContractorProfileDto,
+  ContractorProfileInputDto,
   DisclosureAuditDto,
   MessageDto,
   NotificationDto,
@@ -14,6 +15,10 @@ import type {
   RecommendedGigDto
 } from "./contractor-dtos";
 import { getApiBaseUrl, getDataMode } from "./config";
+import { decryptEnvelopeString, encryptEnvelopeString } from "./crypto-envelope";
+import { connectBrowserWallet } from "./wallet-service";
+import { normalizeOperationalFocusId } from "./operational-focus";
+import { engagementStructureLabel, normalizeEngagementStructure, preferredEngagementStructuresForFocus } from "./engagement-structure";
 
 export type GigStatus = "available" | "applied" | "claimed" | "in_progress" | "completed" | "disputed";
 export type DisclosureField = "realName" | "phone" | "email" | "preciseLocation" | "portfolio" | "credentials";
@@ -24,11 +29,24 @@ export type ContractorProfile = {
   initials: string;
   publicKey: string;
   signingPublicKey: string;
+  avatarUrl?: string;
   encryptedPrivateProfile: string;
+  verticals: string[];
   skillTags: string[];
+  customSkills: string[];
+  useCasePreferences: string[];
+  engagementPreferences?: ContractorProfileDto["engagementPreferences"];
+  rateVisibility?: ContractorProfileDto["rateVisibility"];
   serviceCategories: string[];
+  categories: string[];
+  skillDetails: ContractorProfileDto["skillDetails"];
+  certifications: string[];
+  licenses: string[];
+  experienceLevel: ContractorProfileDto["experienceLevel"];
   approximateRegion: string;
   availability: "ready_now" | "available_today" | "offline";
+  availabilityDetails: ContractorProfileDto["availabilityDetails"];
+  region: ContractorProfileDto["region"];
   workPreference: "local" | "remote" | "hybrid";
   level: number;
   levelName: string;
@@ -38,6 +56,10 @@ export type ContractorProfile = {
   xpNext: number;
   streakDays: number;
   disclosures: Record<DisclosureField, boolean>;
+  profileVisibility: ContractorProfileDto["profileVisibility"];
+  disclosureSettings: ContractorProfileDto["disclosureSettings"];
+  publicProfileFields: string[];
+  onboardingCompleted: boolean;
 };
 
 export type ContractorGig = {
@@ -50,6 +72,9 @@ export type ContractorGig = {
   distanceMiles: number;
   window: string;
   pay: number;
+  engagementStructure?: ContractorGigDto["engagementStructure"];
+  ratePreview?: string;
+  estimatedDuration?: ContractorGigDto["estimatedDuration"];
   requiredLevel: number;
   requiredSkills: string[];
   coordinates: { lat: number; lng: number };
@@ -65,6 +90,7 @@ export type MatchScore = {
   missingRequirements: string[];
   suggestedActions: string[];
   breakdown: {
+    verticalFit: number;
     skillFit: number;
     proximity: number;
     levelEligibility: number;
@@ -73,6 +99,7 @@ export type MatchScore = {
     completionHistory: number;
     priceFit: number;
     responseSpeed: number;
+    engagementFit?: number;
   };
 };
 
@@ -86,7 +113,7 @@ export type Message = {
   createdAt: string;
 };
 
-export type AgreementStatus = "draft" | "accepted" | "arrived" | "in_progress" | "completion_submitted" | "employer_review" | "approved" | "disputed";
+export type AgreementStatus = "draft" | "accepted" | "active" | "arrived" | "in_progress" | "completion_submitted" | "proof_submitted" | "pending_employer_confirmation" | "employer_review" | "approved" | "funded" | "revision_requested" | "pending_completion_approval" | "completed" | "disputed";
 
 export type Agreement = {
   id: string;
@@ -94,6 +121,12 @@ export type Agreement = {
   status: AgreementStatus;
   terms: string[];
   proofNotes: string[];
+  engagementStructure?: ContractorGigDto["engagementStructure"];
+  rateAmount?: number;
+  rateCurrency?: string;
+  estimatedDuration?: string;
+  paymentSchedule?: string;
+  proposalNotes?: string;
   acceptedAt?: string;
   arrivedAt?: string;
   startedAt?: string;
@@ -104,7 +137,7 @@ export type PaymentState = {
   agreementId: string;
   walletConnected: boolean;
   walletAddress: string;
-  escrowStatus: "not_funded" | "funded" | "completion_submitted" | "released" | "refunded" | "disputed";
+  escrowStatus: "not_funded" | "pending_funding_tx" | "funded" | "pending_release" | "completion_submitted" | "released" | "refunded" | "disputed";
   gross: number;
   platformFeeBps: number;
   gasEstimate: number;
@@ -192,58 +225,30 @@ export interface PaymentService {
   syncEscrow(state: ContractorCommandState): Promise<ContractorCommandState>;
 }
 
-const storageKey = "workmesh.contractor.command.v1";
-const localKeyMaterial = "workmesh.contractor.crypto.v1";
-
+const storageKey = "relai.contractor.command.v1";
 const now = () => new Date().toISOString();
 const id = (prefix: string) => `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
 
 export class MockCryptoService implements CryptoService {
   async generateIdentity() {
-    const key = await this.getOrCreateAesKey();
-    const exported = await crypto.subtle.exportKey("jwk", key);
-    localStorage.setItem(localKeyMaterial, JSON.stringify(exported));
     return {
-      publicKey: `x25519_mock_${crypto.randomUUID().slice(0, 8)}`,
-      signingPublicKey: `ed25519_mock_${crypto.randomUUID().slice(0, 8)}`,
+      publicKey: `x25519_local_${crypto.randomUUID().slice(0, 8)}`,
+      signingPublicKey: `ed25519_local_${crypto.randomUUID().slice(0, 8)}`,
       encryptedPrivateProfile: await this.encryptText(JSON.stringify({
-        realName: "Adam Lewin",
+        realName: "Hidden",
         phone: "Hidden",
         email: "Hidden",
-        preciseLocation: "Hidden until job acceptance"
+        preciseLocation: "Hidden until explicit disclosure"
       }))
     };
   }
 
   async encryptText(plainText: string) {
-    const key = await this.getOrCreateAesKey();
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const payload = new TextEncoder().encode(plainText);
-    const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, payload);
-    return `${toBase64(iv)}.${toBase64(new Uint8Array(encrypted))}`;
+    return encryptEnvelopeString(plainText);
   }
 
   async decryptText(cipherText: string) {
-    try {
-      const [ivPart, dataPart] = cipherText.split(".");
-      const key = await this.getOrCreateAesKey();
-      const decrypted = await crypto.subtle.decrypt(
-        { name: "AES-GCM", iv: fromBase64(ivPart) },
-        key,
-        fromBase64(dataPart)
-      );
-      return new TextDecoder().decode(decrypted);
-    } catch {
-      return "[Unable to decrypt]";
-    }
-  }
-
-  private async getOrCreateAesKey() {
-    const stored = typeof localStorage === "undefined" ? null : localStorage.getItem(localKeyMaterial);
-    if (stored) {
-      return crypto.subtle.importKey("jwk", JSON.parse(stored), { name: "AES-GCM" }, true, ["encrypt", "decrypt"]);
-    }
-    return crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt", "decrypt"]);
+    return decryptEnvelopeString(cipherText);
   }
 }
 
@@ -413,19 +418,22 @@ export class MockPaymentService implements PaymentService {
 }
 
 export class ApiGigService implements GigService {
-  async search(filters: ContractorFilters) {
+  async search(filters: ContractorFilters, _state?: ContractorCommandState) {
     const params = new URLSearchParams({
+      keyword: filters.query,
       query: filters.query,
       minPay: String(filters.minPay),
       category: filters.category,
       urgency: filters.urgency,
-      remoteLocal: filters.remoteLocal
+      locationMode: filters.remoteLocal,
+      remoteLocal: filters.remoteLocal,
+      walletAddress: _state?.profile.walletAddress ?? ""
     });
     const gigs = await apiFetch<ContractorGigDto[]>(`/api/gigs/search?${params.toString()}`);
     return gigs.map(fromGigDto);
   }
 
-  async updateStatus(gigId: string, status: GigStatus) {
+  async updateStatus(gigId: string, status: GigStatus, state: ContractorCommandState) {
     const endpoint =
       status === "applied"
         ? `/api/gigs/${gigId}/apply`
@@ -433,7 +441,7 @@ export class ApiGigService implements GigService {
           ? `/api/gigs/${gigId}/claim`
           : `/api/gigs/${gigId}/status`;
     const method = status === "applied" || status === "claimed" ? "POST" : "PATCH";
-    await apiFetch(endpoint, { method, body: JSON.stringify({ status }) });
+    await apiFetch(endpoint, { method, body: JSON.stringify({ walletAddress: state.profile.walletAddress, status }) });
     return loadApiContractorCommandState();
   }
 }
@@ -472,23 +480,19 @@ export class ApiChatService implements ChatService {
 }
 
 export class ApiAgreementService implements AgreementService {
+  constructor(private cryptoService: CryptoService = new MockCryptoService()) {}
+
   async transition(action: "accept" | "arrival" | "start" | "complete" | "approve", _state: ContractorCommandState, proofNote?: string) {
     if (action === "approve") {
-      await apiFetch("/api/notifications", {
+      await apiFetch(`/api/agreements/agr_dock/approve`, {
         method: "POST",
-        body: JSON.stringify({
-          type: "payout_released",
-          title: "Payout release queued",
-          body: "Mock employer approval recorded for API mode.",
-          target: "#mobile-pay",
-          relatedEntityId: "agr_dock"
-        })
+        body: JSON.stringify({ walletAddress: _state.profile.walletAddress, timestamp: new Date().toISOString() })
       });
       return loadApiContractorCommandState();
     }
     await apiFetch(`/api/agreements/agr_dock/${action}`, {
       method: "POST",
-      body: JSON.stringify({ proofNote })
+      body: JSON.stringify({ walletAddress: _state.profile.walletAddress, timestamp: new Date().toISOString(), proofType: "text_note", proofText: proofNote ? await this.cryptoService.encryptText(proofNote) : undefined, proofRefs: [], proofIds: proofNote ? ["encrypted-proof://note"] : [] })
     });
     return loadApiContractorCommandState();
   }
@@ -496,9 +500,10 @@ export class ApiAgreementService implements AgreementService {
 
 export class ApiPaymentService implements PaymentService {
   async connectWallet() {
-    await apiFetch("/api/payments/wallet-connect", { method: "POST", body: JSON.stringify({}) });
+    const wallet = process.env.NEXT_PUBLIC_ENABLE_TESTNET_PAYMENTS === "true" ? await connectBrowserWallet() : { connected: false as const, status: "unavailable" as const };
+    await apiFetch("/api/payments/wallet-connect", { method: "POST", body: JSON.stringify({ walletAddress: wallet.walletAddress, chainId: wallet.chainId, status: wallet.status }) });
     const next = await loadApiContractorCommandState();
-    return { ...next, payment: { ...next.payment, walletConnected: true } };
+    return { ...next, payment: { ...next.payment, walletConnected: wallet.connected || true, walletAddress: wallet.walletAddress ?? next.payment.walletAddress } };
   }
 
   async syncEscrow() {
@@ -507,6 +512,40 @@ export class ApiPaymentService implements PaymentService {
 }
 
 export class ApiProfileService {
+  async getProfile(walletAddress: string) {
+    return apiFetch<ContractorProfileDto>(`/api/profile/${encodeURIComponent(walletAddress)}`);
+  }
+
+  async createProfile(profileInput: ContractorProfileInputDto) {
+    return apiFetch<ContractorCommandApiStateDto>("/api/profile", {
+      method: "POST",
+      body: JSON.stringify(profileInput)
+    });
+  }
+
+  async updateProfile(walletAddress: string, patch: Partial<ContractorProfileDto>) {
+    await apiFetch<ContractorCommandApiStateDto>(`/api/profile/${encodeURIComponent(walletAddress)}`, {
+      method: "PATCH",
+      body: JSON.stringify(patch)
+    });
+    return loadApiContractorCommandState();
+  }
+
+  async getPublicPreview(walletAddress: string) {
+    return apiFetch(`/api/profile/${encodeURIComponent(walletAddress)}/public-preview`);
+  }
+
+  async createDisclosure(walletAddress: string, disclosureInput: Record<string, unknown>) {
+    return apiFetch<ContractorCommandApiStateDto>(`/api/profile/${encodeURIComponent(walletAddress)}/disclosures`, {
+      method: "POST",
+      body: JSON.stringify(disclosureInput)
+    });
+  }
+
+  async getDisclosures(walletAddress: string) {
+    return apiFetch<DisclosureAuditDto[]>(`/api/profile/${encodeURIComponent(walletAddress)}/disclosures`);
+  }
+
   async updateDisclosure(state: ContractorCommandState, field: DisclosureField, enabled: boolean) {
     await apiFetch(`/api/profile/${encodeURIComponent(state.profile.walletAddress)}/disclosures`, {
       method: "POST",
@@ -548,16 +587,39 @@ export async function loadContractorCommandState(cryptoService = new MockCryptoS
   const state: ContractorCommandState = {
     profile: {
       walletAddress: "0xK914...7F21",
-      publicHandle: "Operator K-914",
+      publicHandle: "K-914",
       initials: "K",
       ...identity,
-      skillTags: ["Lift", "Dock", "Scan", "Tools", "Photo proof"],
-      serviceCategories: ["logistics", "facilities"],
+      avatarUrl: undefined,
+      verticals: ["logistics-transport", "executive-assistance-coordination"],
+      skillTags: ["Driving", "Logistics", "Auditing", "Inspection", "Property management"],
+      customSkills: [],
+      useCasePreferences: ["Pickups/drop-offs", "Inventory checks", "Field audits", "Inspections"],
+      engagementPreferences: [
+        { structure: "day_rate", ratePreview: "$650/day", visibility: "after_application" },
+        { structure: "flat_fee", ratePreview: "$800-$1,500/project", visibility: "agreement_only" },
+        { structure: "open_proposal", ratePreview: "Depends on scope", visibility: "public" }
+      ],
+      rateVisibility: "after_application",
+      serviceCategories: ["logistics-transport", "executive-assistance-coordination"],
+      categories: ["logistics-transport", "executive-assistance-coordination"],
+      skillDetails: [
+        { id: "driving", label: "Driving", category: "logistics-transport", proficiencyLevel: "expert" },
+        { id: "logistics-transport", label: "Logistics", category: "logistics-transport", proficiencyLevel: "expert" },
+        { id: "auditing", label: "Auditing", category: "logistics-transport", proficiencyLevel: "advanced" },
+        { id: "inspection", label: "Inspection", category: "executive-assistance-coordination", proficiencyLevel: "advanced" },
+        { id: "property-management", label: "Property management", category: "executive-assistance-coordination", proficiencyLevel: "capable" }
+      ],
+      experienceLevel: "5_plus",
+      certifications: [],
+      licenses: [],
       approximateRegion: "NYC-03",
       availability: "ready_now",
+      availabilityDetails: { availableNow: true, sameDay: true, recurring: true, weeklySchedule: ["Mon AM", "Tue PM", "Wed PM", "Thu PM", "Sat AM"], timezone: "America/New_York" },
+      region: { country: "US", state: "NY", city: "New York", metro: "NYC-03", serviceRadiusMiles: 12, locationMode: "local", approximateCoordinates: { lat: 40.72, lng: -74 }, preciseLocationShared: false },
       workPreference: "local",
       level: 5,
-      levelName: "Elite Operator",
+      levelName: "Trusted contributor",
       rating: 4.96,
       publicReputation: 98,
       xp: 8420,
@@ -570,7 +632,11 @@ export async function loadContractorCommandState(cryptoService = new MockCryptoS
         preciseLocation: false,
         portfolio: false,
         credentials: true
-      }
+      },
+      profileVisibility: { showHandle: true, showSkills: true, showRegion: true, showRating: true, showAvailability: true, showExactLocation: false, showRealName: false, showPhone: false, showEmail: false, requireConfirmationBeforeDisclosure: true },
+      disclosureSettings: { realName: false, phone: false, email: false, preciseLocation: false, portfolio: false, credentials: true },
+      publicProfileFields: ["handle", "skills", "region", "rating", "availability"],
+      onboardingCompleted: true
     },
     gigs: seedGigs(),
     matches: [],
@@ -616,13 +682,13 @@ export async function loadContractorCommandState(cryptoService = new MockCryptoS
       xp: 8420,
       xpNext: 10000,
       level: 5,
-      levelName: "Elite Operator",
-      badges: ["Trust shield", "Platinum response", "19 day streak"],
+      levelName: "Trusted contributor",
+      badges: ["Trusted repeat contributor", "Fast response", "19 day streak"],
       rating: 4.96,
       completionRate: 97
     },
     notifications: [
-      makeNotification("gig_matched", "Priority gig nearby", "Night dock unload is a 96% fit.", "#mobile-gigs"),
+      makeNotification("gig_matched", "Priority gig nearby", "Inventory movement support is a 96% fit.", "#mobile-gigs"),
       makeNotification("escrow_funded", "Escrow funded", "$148 is locked for Harbor Supply.", "#mobile-pay")
     ],
     disclosureAudit: [
@@ -660,7 +726,7 @@ export function createContractorServices(cryptoService: CryptoService = new Mock
       gigService: new ApiGigService(),
       matchingService: new ApiMatchingService(),
       chatService: new ApiChatService(cryptoService),
-      agreementService: new ApiAgreementService(),
+      agreementService: new ApiAgreementService(cryptoService),
       paymentService: new ApiPaymentService(),
       profileService: new ApiProfileService(),
       notificationService: new ApiNotificationService()
@@ -688,7 +754,7 @@ export function persistState(state: ContractorCommandState) {
 
 export function resetContractorCommandState() {
   localStorage.removeItem(storageKey);
-  localStorage.removeItem(localKeyMaterial);
+  localStorage.removeItem("relai.crypto.local-envelope-key.v1");
 }
 
 export function updateDisclosure(state: ContractorCommandState, field: DisclosureField, enabled: boolean) {
@@ -773,48 +839,57 @@ function seedGigs(): ContractorGig[] {
   return [
     {
       id: "dock",
-      title: "Night dock unload, aisle 4-6",
+      title: "Same-day inventory movement support",
       client: "Harbor Supply Node",
-      category: "logistics",
+      category: "logistics-transport",
       urgency: "surge",
       remoteLocal: "local",
       distanceMiles: 1.2,
       window: "21:00",
       pay: 148,
       requiredLevel: 4,
-      requiredSkills: ["Lift", "Dock", "Scan"],
+      requiredSkills: ["Transport", "Inventory movement", "Coordination"],
+      engagementStructure: "day_rate",
+      ratePreview: "$650/day",
+      estimatedDuration: "one_day",
       coordinates: { lat: 40.724, lng: -74.01 },
       status: "available",
       escrowRequired: true
     },
     {
       id: "fixture",
-      title: "Emergency fixture swap",
+      title: "Executive office coordination support",
       client: "Northline Retail",
-      category: "facilities",
+      category: "executive-assistance-coordination",
       urgency: "priority",
       remoteLocal: "local",
       distanceMiles: 0.6,
       window: "18:30",
       pay: 92,
       requiredLevel: 3,
-      requiredSkills: ["Tools", "Photo proof"],
+      requiredSkills: ["Scheduling", "Operational administration", "Coordination"],
+      engagementStructure: "hourly",
+      ratePreview: "$75/hour",
+      estimatedDuration: "several_days",
       coordinates: { lat: 40.733, lng: -73.99 },
       status: "available",
       escrowRequired: true
     },
     {
       id: "event",
-      title: "Event teardown lead",
+      title: "Private event staffing lead",
       client: "Civic Hall Ops",
-      category: "events",
+      category: "events-staffing",
       urgency: "standard",
       remoteLocal: "local",
       distanceMiles: 2.8,
       window: "23:15",
       pay: 225,
       requiredLevel: 6,
-      requiredSkills: ["Crew", "Van", "Lead"],
+      requiredSkills: ["Event operations", "Temporary staffing", "Coordination"],
+      engagementStructure: "day_rate",
+      ratePreview: "$525/day",
+      estimatedDuration: "one_day",
       coordinates: { lat: 40.712, lng: -74.004 },
       status: "available",
       escrowRequired: false
@@ -823,8 +898,14 @@ function seedGigs(): ContractorGig[] {
 }
 
 function scoreGig(gig: ContractorGig, profile: ContractorProfile): MatchScore {
+  const focus = normalizeOperationalFocusId(gig.category);
+  const profileFocuses = new Set([...profile.verticals, ...profile.serviceCategories].map(normalizeOperationalFocusId));
+  const verticalFit = profileFocuses.has(focus) ? 12 : 4;
   const matchedSkills = gig.requiredSkills.filter((skill) => profile.skillTags.includes(skill)).length;
-  const skillFit = Math.round((matchedSkills / gig.requiredSkills.length) * 24);
+  const preferredStructures = new Set((profile.engagementPreferences ?? []).map((item) => normalizeEngagementStructure(item.structure)));
+  const structure = normalizeEngagementStructure(gig.engagementStructure);
+  const engagementFit = preferredStructures.has(structure) ? 8 : preferredEngagementStructuresForFocus(focus).includes(structure) ? 5 : 2;
+  const skillFit = Math.round((matchedSkills / gig.requiredSkills.length) * 20);
   const proximity = gig.distanceMiles < 1 ? 18 : gig.distanceMiles < 2 ? 16 : 12;
   const levelEligibility = profile.level >= gig.requiredLevel ? 16 : 4;
   const rating = Math.round(profile.rating * 2);
@@ -832,7 +913,7 @@ function scoreGig(gig: ContractorGig, profile: ContractorProfile): MatchScore {
   const completionHistory = Math.round(profile.publicReputation / 10);
   const priceFit = gig.pay >= 120 ? 10 : 8;
   const responseSpeed = profile.streakDays > 10 ? 10 : 7;
-  const totalScore = skillFit + proximity + levelEligibility + rating + availability + completionHistory + priceFit + responseSpeed;
+  const totalScore = verticalFit + skillFit + proximity + levelEligibility + rating + availability + completionHistory + priceFit + responseSpeed + engagementFit;
   const missingRequirements = [
     ...(profile.level < gig.requiredLevel ? [`Level ${gig.requiredLevel} required`] : []),
     ...gig.requiredSkills.filter((skill) => !profile.skillTags.includes(skill)).map((skill) => `${skill} skill proof`)
@@ -846,9 +927,10 @@ function scoreGig(gig: ContractorGig, profile: ContractorProfile): MatchScore {
       : "High fit based on proximity, skills, trust score, availability, and payout fit.",
     missingRequirements,
     suggestedActions: missingRequirements.length
-      ? ["Complete one verified proof", "Maintain streak to unlock higher-value work"]
+      ? ["Complete one verified proof", "Maintain streak to unlock higher-value work", "Add engagement preferences to improve matching"]
       : ["Claim while escrow is funded", "Send ETA in encrypted chat"],
     breakdown: {
+      verticalFit,
       skillFit,
       proximity,
       levelEligibility,
@@ -856,7 +938,8 @@ function scoreGig(gig: ContractorGig, profile: ContractorProfile): MatchScore {
       availability,
       completionHistory,
       priceFit,
-      responseSpeed
+      responseSpeed,
+      engagementFit
     }
   };
 }
@@ -936,11 +1019,24 @@ function fromProfileDto(profile: ContractorProfileDto): ContractorProfile {
     initials: profile.publicFields.initials,
     publicKey: profile.publicKey,
     signingPublicKey: profile.signingPublicKey,
+    avatarUrl: profile.avatarUrl,
     encryptedPrivateProfile: profile.encryptedPrivateBlobRef,
+    verticals: profile.verticals,
     skillTags: profile.skills,
+    engagementPreferences: profile.engagementPreferences,
+    rateVisibility: profile.rateVisibility,
+    customSkills: profile.customSkills,
+    useCasePreferences: profile.useCasePreferences,
     serviceCategories: profile.serviceCategories,
+    categories: profile.categories,
+    skillDetails: profile.skillDetails,
+    certifications: profile.certifications,
+    licenses: profile.licenses,
+    experienceLevel: profile.experienceLevel,
     approximateRegion: profile.publicFields.approximateRegion,
     availability: profile.availability,
+    availabilityDetails: profile.availabilityDetails,
+    region: profile.region,
     workPreference: profile.workPreference,
     level: profile.level,
     levelName: profile.publicFields.levelName,
@@ -949,7 +1045,11 @@ function fromProfileDto(profile: ContractorProfileDto): ContractorProfile {
     xp: profile.xp,
     xpNext: profile.xpNext,
     streakDays: profile.streakDays,
-    disclosures: profile.privacySettings
+    disclosures: profile.privacySettings,
+    profileVisibility: profile.profileVisibility,
+    disclosureSettings: profile.disclosureSettings,
+    publicProfileFields: profile.publicProfileFields,
+    onboardingCompleted: profile.onboardingCompleted
   };
 }
 
@@ -966,6 +1066,9 @@ function fromGigDto(gig: ContractorGigDto): ContractorGig {
     pay: gig.pay,
     requiredLevel: gig.requiredLevel,
     requiredSkills: gig.requiredSkills,
+    engagementStructure: gig.engagementStructure,
+    ratePreview: gig.ratePreview ?? engagementStructureLabel(gig.engagementStructure),
+    estimatedDuration: gig.estimatedDuration,
     coordinates: gig.coordinates,
     status: gig.status as GigStatus,
     escrowRequired: gig.escrowRequired
@@ -985,9 +1088,7 @@ function fromRecommendationDto(recommendation: RecommendedGigDto): MatchScore {
 }
 
 async function fromMessageDto(message: MessageDto, cryptoService: CryptoService): Promise<Message> {
-  const decryptedText = message.encryptedPayload.startsWith("encrypted:")
-    ? message.encryptedPayload.replace("encrypted:", "")
-    : await cryptoService.decryptText(message.encryptedPayload);
+  const decryptedText = await cryptoService.decryptText(message.encryptedPayload);
   return {
     id: message.id,
     threadId: message.threadId,
@@ -1018,7 +1119,7 @@ function fromEscrowDto(escrow: PaymentEscrowDto, history: PayoutHistoryDto[], gr
     agreementId: escrow.agreementId,
     walletConnected: false,
     walletAddress: "0xK914...7F21",
-    escrowStatus: escrow.status,
+    escrowStatus: escrow.status === "pending_release" ? "completion_submitted" : escrow.status,
     gross,
     platformFeeBps: Math.round((escrow.platformFee / Math.max(escrow.grossAmount, 1)) * 10000),
     gasEstimate: escrow.gasEstimate,

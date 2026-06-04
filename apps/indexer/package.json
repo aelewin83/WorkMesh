@@ -1,14 +1,17 @@
 {
-  "name": "@workmesh/indexer",
+  "name": "@relai/indexer",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc -p tsconfig.json",
-    "test": "node --test"
+    "test": "node --test",
+    "live": "tsx src/live.ts"
   },
   "dependencies": {
+    "@types/pg": "^8.20.0",
+    "pg": "^8.20.0",
     "viem": "^2.21.53"
   },
   "devDependencies": {

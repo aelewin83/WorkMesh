@@ -4,8 +4,8 @@ import { GlobalBottomNav } from "@/components/GlobalBottomNav";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "WorkMesh Deep Mode",
-  description: "Encrypted local labor marketplace investor demo UI"
+  title: "Relai - Secure hiring for trusted work",
+  description: "A private coordination platform for trusted operational work."
 };
 
 export default function RootLayout({

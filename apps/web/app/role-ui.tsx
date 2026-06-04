@@ -13,8 +13,8 @@ const toneClass: Record<Tone, string> = {
 
 const nav = [
   { href: "/", label: "Home", key: "home", icon: Home },
-  { href: "/contractor", label: "Contractor", key: "contractor", icon: HardHat },
-  { href: "/employer", label: "Employer", key: "employer", icon: Building2 },
+  { href: "/contractor", label: "Contributors", key: "contractor", icon: HardHat },
+  { href: "/employer", label: "Hiring", key: "employer", icon: Building2 },
   { href: "/admin", label: "Admin", key: "admin", icon: LineChart }
 ] as const;
 
@@ -38,7 +38,7 @@ export function RoleHeader({
           </span>
           <span>
             <span className="mesh-heading block text-sm font-black uppercase leading-4 text-white">
-              WorkMesh
+              Relai
             </span>
             <span className="mesh-label block text-zinc-500">{eyebrow}</span>
           </span>

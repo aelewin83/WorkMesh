@@ -27,79 +27,80 @@ import {
   StatusPanel,
   WorkflowGrid
 } from "@/components/PremiumDashboard";
+import { AdminWorkflowPanels } from "@/components/AdminWorkflowPanels";
 
 export default function AdminPage() {
   return (
     <AppShell
       role="admin"
-      eyebrow="Admin command center"
-      title="Monitor growth, payments, risk, and trust."
-      subtitle="A marketplace command center for revenue, liquidity, protected settlement, privacy posture, compliance queues, and system health."
+      eyebrow="Internal ops"
+      title="Manage beta invites, disputes, and trust."
+      subtitle="A lightweight internal panel for private beta operations: invites, moderation, disputes, escrow visibility, and basic health."
       cta="Review Ops"
-      ctaHref="/admin#operations-queues"
+      ctaHref="/admin#admin-disputes"
       paymentsHref="/admin#payment-rails"
       profile={{ name: "Ops Admin", detail: "Finance + risk" }}
     >
       <HeroProfile
         avatar="A"
-        name="WorkMesh Network"
-        detail="Production-readiness console / privacy-native marketplace operations"
-        status="Systems nominal"
-        level="Multi-rail settlement"
+        name="Relai Ops"
+        detail="Private beta operations / secure hiring visibility"
+        status="Beta healthy"
+        level="Invite-only beta"
         progress={78}
         score="99.9"
-        chips={["Treasury multisig", "E2EE enforced", "Risk queues live"]}
+        chips={["Invite access", "Encrypted messages", "Dispute visibility"]}
       />
 
       <WorkflowGrid
         id="admin-workflow"
         title="Admin workflow"
-        subtitle="Internal-only operating modules for marketplace economics, risk, treasury, and compliance."
+        subtitle="Lightweight private beta operations. Advanced analytics and compliance tooling are intentionally deferred."
         items={[
           {
-            title: "Revenue analytics",
-            description: "Monitor GMV, net revenue, take rate, escrow float, active users, fill rate, and rail economics.",
-            action: "Open revenue",
-            actionHref: "/admin#marketplace-analytics",
+            title: "Invite management",
+            description: "Read-only invite visibility for private beta access. Code creation tools stay minimal for MVP.",
+            action: "View invites",
+            actionHref: "/admin#admin-invites",
             Icon: ChartLine,
             tone: "gold"
           },
           {
-            title: "Fee ledger",
-            description: "Audit basis points, fee snapshots, refund waivers, processor costs, and treasury reconciliation.",
-            action: "Open ledger",
-            actionHref: "/admin#operations-queues",
+            title: "Dispute queue",
+            description: "Review basic dispute and blocked-work signals. Full case tooling is deferred until beta usage exists.",
+            action: "View disputes",
+            actionHref: "/admin#admin-disputes",
             Icon: ReceiptText,
             tone: "purple"
           },
           {
-            title: "Payment rails",
-            description: "Review ACH, card, wallet processor, stablecoin escrow, protected-payment gates, and direct settlement.",
-            action: "Review rails",
-            actionHref: "/admin#payment-rails",
+            title: "Escrow visibility",
+            description: "Read-only payment and settlement status for private beta operations. No payment controls are exposed.",
+            action: "View payments",
+            actionHref: "/admin#admin-payments",
             Icon: WalletCards,
             tone: "info"
           },
           {
-            title: "Risk queue",
-            description: "Triage disputes, fraud alerts, sybil review, suspicious velocity, chargebacks, and category abuse.",
-            action: "Review risk",
-            actionHref: "/admin#operations-queues",
+            title: "Moderation queue",
+            description: "Lightweight review for disputes, suspicious activity, and category abuse during private beta.",
+            action: "Review queue",
+            actionHref: "/admin#admin-disputes",
             Icon: ShieldAlert,
             tone: "danger"
           },
           {
-            title: "Compliance queue",
-            description: "Track worker classification, KYC/KYB hooks, sanctions screening, tax readiness, and market restrictions.",
-            action: "Open compliance",
-            actionHref: "/admin#compliance-health",
+            title: "User visibility",
+            description: "Read-only user and role visibility. Advanced verification, KYC, and compliance systems are deferred.",
+            action: "View users",
+            actionHref: "/admin#admin-users",
             Icon: Scale,
             tone: "warning"
           },
           {
             title: "Privacy operations",
-            description: "Audit E2EE defaults, encrypted job briefs, minimal metadata, selective disclosure, and retention policy.",
-            action: "Open privacy",
+            description: "Read-only privacy posture summary for encrypted messages, disclosure defaults, and retention boundaries.",
+            action: "View privacy notes",
             actionHref: "/admin#privacy",
             Icon: LockKeyhole,
             tone: "success"
@@ -108,59 +109,59 @@ export default function AdminPage() {
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
-        <MetricCard label="GMV" value="$1.84M" change="+18.4% wk" tone="gold" Icon={ChartLine} />
-        <MetricCard label="Net revenue" value="$151K" change="+14.2% wk" tone="success" Icon={Banknote} />
-        <MetricCard label="Take rate" value="8.2%" change="+0.6 pts" tone="purple" Icon={ReceiptText} />
-        <MetricCard label="Escrow float" value="$312K" change="12 active rails" tone="info" Icon={WalletCards} />
-        <MetricCard label="Active users" value="48.2K" change="+9.1%" tone="success" Icon={UsersRound} />
-        <MetricCard label="Fill rate" value="86%" change="+4.3 pts" tone="gold" Icon={Gauge} />
+        <MetricCard label="Invites" value="12" change="4 unused" tone="gold" Icon={ChartLine} />
+        <MetricCard label="Active beta users" value="6" change="seed group" tone="success" Icon={Banknote} />
+        <MetricCard label="Open disputes" value="1" change="needs review" tone="purple" Icon={ReceiptText} />
+        <MetricCard label="Escrow states" value="3" change="testnet visible" tone="info" Icon={WalletCards} />
+        <MetricCard label="Reports" value="0" change="no abuse reports" tone="success" Icon={UsersRound} />
+        <MetricCard label="System" value="OK" change="local beta" tone="gold" Icon={Gauge} />
       </div>
 
-      <Section id="marketplace-analytics" title="Marketplace analytics" subtitle="Revenue, rail mix, liquidity, and risk movement.">
+      <Section id="marketplace-analytics" title="Beta operations" subtitle="Small, practical signals for the current private beta. Read-only monitoring only.">
         <div className="grid gap-4 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <LineChartCard title="Revenue over time" value="$151K" data={[42, 48, 51, 63, 71, 88, 116, 151]} tone="gold" note="weekly" />
+            <LineChartCard title="Invite activity" value="12" data={[2, 3, 4, 5, 7, 8, 10, 12]} tone="gold" note="weekly" />
           </div>
           <LineChartCard title="Risk trend" value="1.7%" data={[9, 8, 7, 5, 6, 4, 3, 2]} tone="success" note="down" />
           <BarListCard
-            title="Fee revenue by rail"
+            title="Ops visibility"
             tone="purple"
             items={[
-              { label: "Escrow", value: "46%", percent: 46 },
-              { label: "ACH / card", value: "22%", percent: 22 },
-              { label: "Wallet", value: "18%", percent: 18 },
-              { label: "Stablecoin", value: "14%", percent: 14 }
+              { label: "Invites", value: "46%", percent: 46 },
+              { label: "Disputes", value: "22%", percent: 22 },
+              { label: "Users", value: "18%", percent: 18 },
+              { label: "Payments", value: "14%", percent: 14 }
             ]}
           />
         </div>
       </Section>
 
-      <Section id="operations-queues" title="Operations queues" subtitle="Disputes, fraud, treasury, compliance, and platform health.">
+      <Section id="operations-queues" title="Operations queues" subtitle="Disputes, moderation, payment visibility, and beta health.">
         <div className="grid gap-4 lg:grid-cols-3">
           <StatusPanel
             title="Disputes queue"
             items={[
-              { label: "New disputes", value: "12", tone: "warning", Icon: Scale },
-              { label: "High-value review", value: "3", tone: "danger", Icon: AlertTriangle },
-              { label: "Refund waivers", value: "$3.8K", tone: "gold", Icon: ReceiptText },
+              { label: "New disputes", value: "1", tone: "warning", Icon: Scale },
+              { label: "Needs review", value: "1", tone: "danger", Icon: AlertTriangle },
+              { label: "Protected settlement", value: "Visible", tone: "gold", Icon: ReceiptText },
               { label: "Median close time", value: "11h", tone: "success", Icon: CheckCircle2 }
             ]}
           />
           <StatusPanel
-            title="Fraud alerts"
+            title="Moderation alerts"
             items={[
-              { label: "Sybil review", value: "18 wallets", tone: "danger", Icon: ShieldAlert },
+              { label: "Account review", value: "0", tone: "success", Icon: ShieldAlert },
               { label: "Spam throttles", value: "Normal", tone: "success", Icon: ShieldCheck },
-              { label: "Velocity anomalies", value: "6", tone: "warning", Icon: Zap },
-              { label: "External steering", value: "Flagged", tone: "warning", Icon: Siren }
+              { label: "Velocity anomalies", value: "0", tone: "success", Icon: Zap },
+              { label: "External steering", value: "None", tone: "success", Icon: Siren }
             ]}
           />
           <StatusPanel
-            title="Treasury wallet"
+            title="Payment visibility"
             items={[
-              { label: "Multisig target", value: "0x...dEaD", tone: "gold", Icon: WalletCards },
-              { label: "Fee reconciliation", value: "99.8%", tone: "success", Icon: CheckCircle2 },
-              { label: "Stablecoin escrow", value: "Lawful markets", tone: "info", Icon: HandCoins },
+              { label: "Test wallet", value: "Configured", tone: "gold", Icon: WalletCards },
+              { label: "Settlement records", value: "Read-only", tone: "success", Icon: CheckCircle2 },
+              { label: "Protected settlement", value: "Tracked", tone: "info", Icon: HandCoins },
               { label: "Config changes", value: "Step-up", tone: "muted", Icon: LockKeyhole }
             ]}
           />
@@ -169,30 +170,30 @@ export default function AdminPage() {
 
       <div id="payment-rails" className="scroll-mt-24" />
 
-      <Section id="supply-demand" title="Supply and demand" subtitle="Liquidity and category pressure across active markets.">
+      <Section id="supply-demand" title="Private beta activity" subtitle="Lightweight readiness signals. No scale-signaling analytics yet.">
         <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
-          <LineChartCard title="Supply vs demand" value="0.72 ratio" data={[86, 83, 78, 72, 69, 73, 71, 72]} tone="info" note="thin supply" />
+          <LineChartCard title="Request readiness" value="3 active" data={[1, 1, 2, 2, 3, 3, 3, 3]} tone="info" note="seed data" />
           <BarListCard
-            title="Market pressure"
+            title="Focus areas"
             tone="gold"
             items={[
-              { label: "NYC logistics", value: "Surge", percent: 94 },
-              { label: "Chicago repair", value: "High", percent: 78 },
-              { label: "Austin events", value: "Balanced", percent: 54 },
-              { label: "Remote ops", value: "Low", percent: 38 }
+              { label: "Logistics", value: "Active", percent: 74 },
+              { label: "Research", value: "Seeded", percent: 58 },
+              { label: "Events", value: "Seeded", percent: 44 },
+              { label: "Advisory", value: "Quiet", percent: 28 }
             ]}
           />
         </div>
       </Section>
 
-      <Section id="compliance-health" title="Compliance and system health" subtitle="Global privacy defaults, payment gates, and operational readiness.">
+      <Section id="compliance-health" title="Beta health" subtitle="Privacy defaults, payment gates, and operational readiness.">
         <div className="grid gap-4 lg:grid-cols-3">
           <StatusPanel
-            title="Compliance queue"
+            title="Review queue"
             items={[
-              { label: "Worker classification", value: "Review", tone: "warning", Icon: Scale },
-              { label: "Payment rail review", value: "4 markets", tone: "warning", Icon: Banknote },
-              { label: "KYC/KYB hooks", value: "Ready", tone: "success", Icon: ShieldCheck },
+              { label: "Contributor reports", value: "0", tone: "success", Icon: Scale },
+              { label: "Payment review", value: "Read-only", tone: "info", Icon: Banknote },
+              { label: "Verification hooks", value: "Deferred", tone: "muted", Icon: ShieldCheck },
               { label: "Direct settlement", value: "Reputation gated", tone: "gold", Icon: Gauge }
             ]}
           />
@@ -206,13 +207,13 @@ export default function AdminPage() {
             ]}
           />
           <BarListCard
-            title="Revenue channels"
+            title="Deferred tooling"
             tone="purple"
             items={[
-              { label: "Platform fees", value: "46%", percent: 46 },
-              { label: "Priority placement", value: "18%", percent: 18 },
-              { label: "Verification", value: "14%", percent: 14 },
-              { label: "Team tools", value: "12%", percent: 12 }
+              { label: "Advanced analytics", value: "Deferred", percent: 46 },
+              { label: "Treasury tooling", value: "Deferred", percent: 18 },
+              { label: "Compliance workflows", value: "Deferred", percent: 14 },
+              { label: "Team controls", value: "Deferred", percent: 12 }
             ]}
           />
         </div>
@@ -221,6 +222,7 @@ export default function AdminPage() {
       <Section id="privacy" title="Privacy operations" subtitle="No plaintext private content. Minimal discovery metadata. Selective disclosure only.">
         <PrivacyStrip />
       </Section>
+      <AdminWorkflowPanels />
     </AppShell>
   );
 }

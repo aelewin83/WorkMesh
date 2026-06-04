@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
 
-describe("WorkMesh contracts MVP", function () {
+describe("Relai contracts MVP", function () {
   const FEE_BPS = 500;
   const BPS_DENOMINATOR = 10_000n;
 
@@ -85,6 +85,13 @@ describe("WorkMesh contracts MVP", function () {
       .to.emit(escrow, "EscrowFunded")
       .withArgs(1, 1, client.address, worker.address, amount);
 
+    await expect(escrow.connect(worker).markWorkStarted(1))
+      .to.emit(escrow, "WorkStarted")
+      .withArgs(1, 1, worker.address, anyValue);
+    await expect(escrow.connect(worker).submitProof(1, "encrypted-proof://proof-1"))
+      .to.emit(escrow, "ProofSubmitted")
+      .withArgs(1, 1, worker.address, "encrypted-proof://proof-1", anyValue);
+
     const workerBefore = await ethers.provider.getBalance(worker.address);
     const treasuryBefore = await ethers.provider.getBalance(treasury.address);
 
@@ -92,6 +99,9 @@ describe("WorkMesh contracts MVP", function () {
     await expect(tx)
       .to.emit(escrow, "FeeCollected")
       .withArgs(1, amount, fee, treasury.address, anyValue);
+    await expect(tx)
+      .to.emit(escrow, "EscrowReleased")
+      .withArgs(1, 1, worker.address, amount, fee, net, treasury.address, anyValue);
     await expect(tx)
       .to.emit(escrow, "PayoutVerified")
       .withArgs(1, worker.address, net, anyValue);
@@ -115,7 +125,11 @@ describe("WorkMesh contracts MVP", function () {
     await escrow.connect(client).fundEscrow(1, worker.address, { value: amount });
 
     const treasuryBefore = await ethers.provider.getBalance(treasury.address);
-    await expect(escrow.connect(client).refund(1))
+    const refundTx = await escrow.connect(client).refund(1);
+    await expect(refundTx)
+      .to.emit(escrow, "EscrowRefunded")
+      .withArgs(1, 1, client.address, amount, anyValue);
+    await expect(refundTx)
       .to.emit(escrow, "RefundIssued")
       .withArgs(1, client.address, amount, waivedFee);
 
@@ -171,6 +185,9 @@ describe("WorkMesh contracts MVP", function () {
     await expect(tx)
       .to.emit(escrow, "DisputeResolved")
       .withArgs(1, admin2.address, 1);
+    await expect(tx)
+      .to.emit(escrow, "EscrowReleased")
+      .withArgs(1, 7, worker.address, amount, fee, net, treasury.address, anyValue);
     await expect(tx)
       .to.emit(escrow, "PayoutVerified")
       .withArgs(7, worker.address, net, anyValue);

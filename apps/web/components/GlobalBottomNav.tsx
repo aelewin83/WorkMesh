@@ -17,9 +17,9 @@ const linksForRole = (role: Role) => {
   if (role === "employer") {
     return [
       { label: "Home", href: "/", Icon: Home },
-      { label: "Gigs", href: "/employer#employer-workflow", Icon: BriefcaseBusiness },
-      { label: "Chat", href: "/employer#operations", Icon: Bell },
-      { label: "Pay", href: "/employer#payments", Icon: WalletCards },
+      { label: "Request", href: "/employer#post-gig", Icon: BriefcaseBusiness },
+      { label: "Chat", href: "/employer#open-chat", Icon: Bell },
+      { label: "Settle", href: "/employer#payments", Icon: WalletCards },
       { label: "Profile", href: "/employer#profile", Icon: UserRound }
     ];
   }
@@ -27,18 +27,18 @@ const linksForRole = (role: Role) => {
   if (role === "admin") {
     return [
       { label: "Home", href: "/", Icon: Home },
-      { label: "Gigs", href: "/admin#marketplace-analytics", Icon: BriefcaseBusiness },
-      { label: "Chat", href: "/admin#operations-queues", Icon: Bell },
-      { label: "Pay", href: "/admin#payment-rails", Icon: WalletCards },
-      { label: "Profile", href: "/admin#profile", Icon: UserRound }
+      { label: "Disputes", href: "/admin#admin-disputes", Icon: BriefcaseBusiness },
+      { label: "Invites", href: "/admin#admin-invites", Icon: Bell },
+      { label: "Settle", href: "/admin#admin-payments", Icon: WalletCards },
+      { label: "Users", href: "/admin#admin-users", Icon: UserRound }
     ];
   }
 
   return [
     { label: "Home", href: "/contractor#mobile-home", Icon: Home },
-    { label: "Gigs", href: "/contractor#mobile-gigs", Icon: BriefcaseBusiness },
+    { label: "Work", href: "/contractor#mobile-gigs", Icon: BriefcaseBusiness },
     { label: "Chat", href: "/contractor#mobile-chat", Icon: Bell },
-    { label: "Pay", href: "/contractor#mobile-pay", Icon: WalletCards },
+    { label: "Settle", href: "/contractor#mobile-pay", Icon: WalletCards },
     { label: "Profile", href: "/contractor#mobile-profile", Icon: UserRound }
   ];
 };

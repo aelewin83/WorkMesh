@@ -50,6 +50,36 @@ contract Escrow {
         address payee,
         uint256 amount
     );
+    event WorkStarted(
+        uint256 indexed escrowId,
+        uint256 indexed agreementId,
+        address indexed contractor,
+        uint256 timestamp
+    );
+    event ProofSubmitted(
+        uint256 indexed escrowId,
+        uint256 indexed agreementId,
+        address indexed contractor,
+        string proofRef,
+        uint256 timestamp
+    );
+    event EscrowReleased(
+        uint256 indexed escrowId,
+        uint256 indexed agreementId,
+        address indexed contractor,
+        uint256 grossAmount,
+        uint256 platformFee,
+        uint256 netPayout,
+        address treasuryWallet,
+        uint256 timestamp
+    );
+    event EscrowRefunded(
+        uint256 indexed escrowId,
+        uint256 indexed agreementId,
+        address indexed employer,
+        uint256 amount,
+        uint256 timestamp
+    );
     event PayoutVerified(
         uint256 indexed agreementId,
         address indexed worker,
@@ -161,6 +191,39 @@ contract Escrow {
         });
 
         emit EscrowFunded(escrowId, workAgreementId, msg.sender, payee, msg.value);
+    }
+
+    function markWorkStarted(
+        uint256 escrowId
+    ) external escrowExists(escrowId) {
+        EscrowDeposit storage deposit = deposits[escrowId];
+        require(deposit.payee == msg.sender, "not payee");
+        require(deposit.status == EscrowStatus.Funded, "not funded");
+
+        emit WorkStarted(
+            escrowId,
+            deposit.workAgreementId,
+            msg.sender,
+            block.timestamp
+        );
+    }
+
+    function submitProof(
+        uint256 escrowId,
+        string calldata encryptedProofRef
+    ) external escrowExists(escrowId) {
+        EscrowDeposit storage deposit = deposits[escrowId];
+        require(deposit.payee == msg.sender, "not payee");
+        require(deposit.status == EscrowStatus.Funded, "not funded");
+        require(bytes(encryptedProofRef).length != 0, "proof required");
+
+        emit ProofSubmitted(
+            escrowId,
+            deposit.workAgreementId,
+            msg.sender,
+            encryptedProofRef,
+            block.timestamp
+        );
     }
 
     function verifyPayout(
@@ -401,6 +464,17 @@ contract Escrow {
 
         _sendValue(deposit.payee, netAmount);
 
+        emit EscrowReleased(
+            escrowId,
+            deposit.workAgreementId,
+            deposit.payee,
+            grossAmount,
+            feeAmount,
+            netAmount,
+            treasuryWallet,
+            block.timestamp
+        );
+
         emit PayoutVerified(
             deposit.workAgreementId,
             deposit.payee,
@@ -419,6 +493,13 @@ contract Escrow {
         deposit.status = EscrowStatus.Refunded;
 
         _sendValue(deposit.payer, amount);
+        emit EscrowRefunded(
+            escrowId,
+            deposit.workAgreementId,
+            deposit.payer,
+            amount,
+            block.timestamp
+        );
         emit RefundIssued(escrowId, deposit.payer, amount, feeWaived);
     }
 

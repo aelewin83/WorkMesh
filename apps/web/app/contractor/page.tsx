@@ -32,29 +32,30 @@ import {
   WorkflowGrid
 } from "@/components/PremiumDashboard";
 import { ContractorMobileConsole } from "@/components/ContractorMobileConsole";
+import { AssignedEngagementsPanel, ContractorWorkflowPanels } from "@/components/ContractorWorkflowPanels";
 
 const gigs = [
   {
-    title: "Night dock unload",
+    title: "Inventory movement support",
     meta: "1.2 mi / 21:00-23:00 / Harbor Supply",
     price: "$148",
     match: "96% fit",
-    tags: ["Lift", "Dock", "Scan"],
+    tags: ["Transport", "Inventory movement", "Coordination"],
     urgent: true
   },
   {
-    title: "Emergency fixture swap",
+    title: "Executive office coordination support",
     meta: "0.6 mi / 18:30 / Northline Retail",
     price: "$92",
     match: "91% fit",
-    tags: ["Tools", "Photo proof", "Electrical"]
+    tags: ["Scheduling", "Operational admin", "Coordination"]
   },
   {
-    title: "Event teardown lead",
+    title: "Private event staffing lead",
     meta: "2.8 mi / 23:15 / Civic Hall Ops",
     price: "$225",
     match: "89% fit",
-    tags: ["Crew", "Van", "Lead"]
+    tags: ["Event operations", "Temporary staffing", "Coordination"]
   }
 ];
 
@@ -62,74 +63,74 @@ export default function ContractorPage() {
   return (
     <AppShell
       role="contractor"
-      eyebrow="Contractor console"
-      title="Find work. Build trust. Get paid securely."
-      subtitle="A privacy-first operating system for local opportunities, encrypted coordination, protected payments, and portable reputation."
-      cta="Find Work"
-      ctaHref="/contractor#recommended-gigs"
+      eyebrow="Trusted work profile"
+      title="Build your trusted work profile."
+      subtitle="Complete onboarding, review trusted requests, coordinate privately, and track protected settlement without revealing more than needed."
+      cta="Complete Setup"
+      ctaHref="/contractor#complete-setup"
       paymentsHref="/contractor#payments"
-      profile={{ name: "Operator K-914", detail: "Elite contractor" }}
+      profile={{ name: "K-914", detail: "Trusted contributor" }}
       mobileHero={<ContractorMobileConsole />}
     >
       <HeroProfile
         avatar="K"
-        name="Operator K-914"
-        detail="Pseudonymous contractor / NYC-03 / online for priority tasks"
+        name="K-914"
+        detail="Pseudonymous contributor / NYC-03 / available for trusted work"
         status="Online"
-        level="Level 5 / Elite Priority"
+        level="Level 5 / Trusted contributor"
         progress={84}
         score="98"
-        chips={["19 day streak", "184 clean closes", "Private identity"]}
+        chips={["Responsive", "Verified work history", "Private identity"]}
       />
 
       <WorkflowGrid
         id="contractor-workflow"
-        title="Contractor workflow"
-        subtitle="Clear worker-facing modules, restored from the previous role-separated flow."
+        title="Trusted work workflow"
+        subtitle="Focused entry points for setup, trusted requests, secure coordination, agreements, and settlement."
         items={[
           {
-            title: "Secure identity",
-            description: "Create or review the pseudonymous profile, encrypted credentials, recovery keys, and selective disclosure settings.",
-            action: "Open identity",
-            actionHref: "/contractor#profile",
+            title: "Private identity",
+            description: "Finish your pseudonymous profile, capabilities, region, availability, and selective disclosure defaults.",
+            action: "Complete setup",
+            actionHref: "/contractor#complete-setup",
             Icon: ShieldCheck,
             tone: "gold"
           },
           {
-            title: "Recommended gigs",
-            description: "Scan best-fit work ranked by skills, proximity, level, availability, price fit, and reputation.",
-            action: "View gigs",
+            title: "Recommended requests",
+            description: "Review private-beta requests ranked by your focus areas, capabilities, region, and availability.",
+            action: "Browse requests",
             actionHref: "/contractor#recommended-gigs",
             Icon: BriefcaseBusiness,
             tone: "info"
           },
           {
-            title: "Nearby map",
-            description: "See local priority tasks, travel radius, demand zones, and time windows without exposing private identity.",
-            action: "Open map",
+            title: "Area preview",
+            description: "Read-only local work-area context. Exact location stays hidden unless you choose to disclose it later.",
+            action: "View preview",
             actionHref: "/contractor#recommended-gigs",
             Icon: MapPin
           },
           {
             title: "Encrypted chat",
-            description: "Coordinate with employers through sealed messaging, encrypted attachments, and consent-based reveals.",
+            description: "Secure messaging opens when a task or agreement thread exists. Messages remain encrypted payloads.",
             action: "Open chat",
-            actionHref: "/contractor#work-cockpit",
+            actionHref: "/contractor#open-chat",
             Icon: Bell,
             tone: "purple"
           },
           {
-            title: "Protected payment",
-            description: "Track escrow, payout rail, worker net, treasury fee, and direct-settlement unlock status.",
+            title: "Protected settlement",
+            description: "View protected settlement status, expected net payout, platform fee, and payment history for active agreements.",
             action: "View payments",
             actionHref: "/contractor#payments",
             Icon: WalletCards,
             tone: "success"
           },
           {
-            title: "Level + reputation",
-            description: "Review XP, streaks, badges, response medals, trust shields, reviews, and portable proof signals.",
-            action: "View progress",
+            title: "Trust profile",
+            description: "Read-only trust summary. Deeper analytics unlock after real completed work exists.",
+            action: "View summary",
             actionHref: "/contractor#work-cockpit",
             Icon: Medal,
             tone: "warning"
@@ -138,18 +139,18 @@ export default function ContractorPage() {
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <MetricCard label="Pending escrow" value="$621" change="+$148 ready" tone="gold" Icon={WalletCards} />
-        <MetricCard label="Weekly earnings" value="$2.8K" change="+18.4% week" tone="success" Icon={HandCoins} />
-        <MetricCard label="Completion rate" value="97%" change="top 4% market" tone="success" Icon={BadgeCheck} />
-        <MetricCard label="Match fit" value="94%" change="nearby priority" tone="info" Icon={Gauge} />
+        <MetricCard label="Onboarding" value="72%" change="finish privacy setup" tone="gold" Icon={WalletCards} />
+        <MetricCard label="Open requests" value="3" change="private beta seed" tone="success" Icon={HandCoins} />
+        <MetricCard label="Agreements" value="1" change="ready to review" tone="success" Icon={BadgeCheck} />
+        <MetricCard label="Profile fit" value="Good" change="skills selected" tone="info" Icon={Gauge} />
       </div>
 
-      <Section title="Performance" subtitle="Earnings, ratings, and category strength at a glance.">
+      <Section title="Beta progress" subtitle="Lightweight indicators for your first usable workflow. Larger analytics unlock after real activity exists.">
         <div className="grid gap-4 lg:grid-cols-3">
-          <LineChartCard title="Earnings trend" value="$12.4K" data={[8, 10, 9, 14, 16, 15, 19, 22]} tone="gold" note="30 days" />
+          <LineChartCard title="Settlement trend" value="$12.4K" data={[8, 10, 9, 14, 16, 15, 19, 22]} tone="gold" note="30 days" />
           <LineChartCard title="Rating trend" value="4.96" data={[90, 91, 92, 94, 93, 96, 97, 98]} tone="success" note="stable" />
           <BarListCard
-            title="Category performance"
+            title="Focus performance"
             tone="purple"
             items={[
               { label: "Logistics", value: "96%", percent: 96 },
@@ -162,8 +163,8 @@ export default function ContractorPage() {
 
       <Section
         id="recommended-gigs"
-        title="Recommended gigs"
-        subtitle="Ranked by proximity, level eligibility, availability, price fit, and prior category success."
+        title="Recommended requests"
+        subtitle="Ranked by proximity, eligibility, availability, payout fit, and prior focus-area history."
         action={<span className="wm-chip border-gold-primary/20 bg-gold-primary/10 text-gold-primary"><Sparkles className="h-3.5 w-3.5" /> Best fit</span>}
       >
         <div className="grid gap-4 lg:grid-cols-3">
@@ -173,10 +174,14 @@ export default function ContractorPage() {
         </div>
       </Section>
 
-      <Section id="work-cockpit" title="Work cockpit" subtitle="Gamification, settlement state, and secure operational alerts.">
+      <Section id="assigned-engagements" title="Assigned engagements" subtitle="Your role, agreement status, and limited team context for accepted multi-contributor work.">
+        <AssignedEngagementsPanel />
+      </Section>
+
+      <Section id="work-cockpit" title="Work status" subtitle="Trust profile, settlement state, and secure coordination alerts.">
         <div className="grid gap-4 lg:grid-cols-3">
           <StatusPanel
-            title="Gamification"
+            title="Trust progress"
             items={[
               { label: "Current streak", value: "19d", tone: "gold", Icon: Zap },
               { label: "Next unlock", value: "Lower escrow friction", tone: "info", Icon: Sparkles },
@@ -196,10 +201,10 @@ export default function ContractorPage() {
           <StatusPanel
             title="Notifications"
             items={[
-              { label: "Priority gig nearby", value: "now", tone: "gold", Icon: Bell },
+              { label: "Priority request nearby", value: "now", tone: "gold", Icon: Bell },
               { label: "Credential proof requested", value: "9m", tone: "info", Icon: Star },
               { label: "Escrow release pending", value: "14m", tone: "warning", Icon: Clock3 },
-              { label: "Worker zone", value: "Midtown east", tone: "muted", Icon: MapPin }
+              { label: "Work area", value: "Midtown east", tone: "muted", Icon: MapPin }
             ]}
           />
         </div>
@@ -210,6 +215,7 @@ export default function ContractorPage() {
       <Section id="privacy" title="Privacy defaults" subtitle="Public discovery exposes only minimal matching metadata. Private content stays encrypted.">
         <PrivacyStrip />
       </Section>
+      <ContractorWorkflowPanels />
     </AppShell>
   );
 }
@@ -224,8 +230,8 @@ function ContractorMobileDashboard() {
           <div className="flex items-center gap-3">
             <Menu className="h-5 w-5 text-text-secondary" strokeWidth={1.75} aria-hidden="true" />
             <div>
-              <p className="wm-heading text-base font-bold">WorkMesh</p>
-              <p className="wm-label text-success">Contractor</p>
+              <p className="wm-heading text-base font-bold">Relai</p>
+              <p className="wm-label text-success">Contributor</p>
             </div>
           </div>
           <div className="flex items-center gap-3 text-text-secondary">
@@ -241,17 +247,17 @@ function ContractorMobileDashboard() {
                 K
               </div>
               <div className="min-w-0 flex-1">
-                <h1 className="wm-heading truncate text-xl font-bold">Operator K-914</h1>
+                <h1 className="wm-heading truncate text-xl font-bold">K-914</h1>
                 <div className="mt-1 flex items-center gap-2 text-sm text-success">
                   <span className="h-2 w-2 rounded-full bg-success" />
                   Online
                 </div>
-                <p className="mt-1 text-xs text-text-secondary">Anonymous contractor</p>
+                <p className="mt-1 text-xs text-text-secondary">Pseudonymous contributor</p>
               </div>
             </div>
             <div className="mt-4 flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs text-text-secondary">Elite Operator / Level 5</p>
+                <p className="text-xs text-text-secondary">Trusted contributor / Level 5</p>
                 <p className="wm-metric mt-1 text-xs text-white">8,420 / 10,000 XP</p>
               </div>
               <Sparkles className="h-4 w-4 text-gold-primary" strokeWidth={1.75} aria-hidden="true" />
@@ -278,15 +284,15 @@ function ContractorMobileDashboard() {
             </a>
           </div>
 
-          <p id="mobile-gigs" className="wm-label mt-5 scroll-mt-24 text-text-muted">Featured gig</p>
+          <p id="mobile-gigs" className="wm-label mt-5 scroll-mt-24 text-text-muted">Featured request</p>
           <article id="recommended-gigs" className="mt-2 rounded-3xl border border-border-2 bg-bg-2 p-4 shadow-card">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h2 className="wm-heading text-base font-bold leading-5">Night dock unload, aisle 4-6</h2>
+                <h2 className="wm-heading text-base font-bold leading-5">Same-day inventory movement support</h2>
                 <p className="mt-1 text-xs text-text-muted">Harbor Supply Node</p>
               </div>
               <span className="rounded-lg border border-gold-primary/30 bg-gold-primary/10 px-2 py-1 font-mono text-[0.65rem] font-semibold text-gold-primary">
-                Escrow
+                Protected
               </span>
             </div>
 
@@ -300,7 +306,7 @@ function ContractorMobileDashboard() {
                 <p className="wm-metric mt-1 text-sm font-semibold">21:00</p>
               </div>
               <div className="pl-3">
-                <p className="text-xs text-text-muted">Pay</p>
+                <p className="text-xs text-text-muted">Payout</p>
                 <p className="wm-metric mt-1 text-sm font-semibold text-success">$148</p>
               </div>
             </div>
@@ -322,8 +328,8 @@ function ContractorMobileDashboard() {
 
           <div className="mt-3 grid gap-3">
             {[
-              ["Emergency fixture swap", "0.6 mi / 18:30", "$92", "91%"],
-              ["Event teardown lead", "2.8 mi / 23:15", "$225", "89%"]
+              ["Executive office coordination support", "0.6 mi / 18:30", "$92", "91%"],
+              ["Private event staffing lead", "2.8 mi / 23:15", "$225", "89%"]
             ].map(([title, meta, pay, fit]) => (
               <a key={title} href="#mobile-gigs" className="rounded-2xl border border-border-2 bg-bg-2 p-3">
                 <div className="flex items-center justify-between gap-3">

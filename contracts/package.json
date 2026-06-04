@@ -1,8 +1,8 @@
 {
-  "name": "workmesh-contracts",
+  "name": "relai-contracts",
   "version": "0.1.0",
   "private": true,
-  "description": "Solidity MVP contracts for WorkMesh registry, agreements, escrow, and reputation.",
+  "description": "Solidity MVP contracts for Relai registry, agreements, escrow, and reputation.",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",

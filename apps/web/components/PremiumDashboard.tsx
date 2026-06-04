@@ -20,8 +20,8 @@ type Tone = "gold" | "success" | "warning" | "danger" | "info" | "purple" | "mut
 
 const roleLinks: Array<{ href: string; label: string; role?: Role; Icon: LucideIcon }> = [
   { href: "/", label: "Home", Icon: Home },
-  { href: "/contractor", label: "Contractor", role: "contractor", Icon: UserRound },
-  { href: "/employer", label: "Employer", role: "employer", Icon: BriefcaseBusiness },
+  { href: "/contractor", label: "Contributors", role: "contractor", Icon: UserRound },
+  { href: "/employer", label: "Hiring", role: "employer", Icon: BriefcaseBusiness },
   { href: "/admin", label: "Admin", role: "admin", Icon: ChartLine }
 ];
 
@@ -77,13 +77,13 @@ export function AppShell({
               <ShieldCheck className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
             </div>
             <div>
-              <p className="wm-heading text-base font-bold leading-5">WorkMesh</p>
+              <p className="wm-heading text-base font-bold leading-5">Relai</p>
               <p className="wm-label hidden sm:block">{eyebrow}</p>
             </div>
           </Link>
 
           <nav className="hidden items-center gap-1 rounded-2xl border border-border-2 bg-bg-1 p-1 md:flex">
-            {roleLinks.slice(1).map(({ href, label, role: itemRole, Icon }) => {
+            {roleLinks.slice(1).filter((item) => item.role !== "admin" || role === "admin").map(({ href, label, role: itemRole, Icon }) => {
               const active = role === itemRole;
               return (
                 <Link
@@ -145,7 +145,7 @@ export function AppShell({
             </Link>
             <Link href={paymentsHref ?? `/${role}#payments`} className="wm-button-secondary">
               <WalletCards className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-              Payments
+              Settlement
             </Link>
           </div>
         </div>
@@ -153,7 +153,7 @@ export function AppShell({
 
       <section className="wm-container mt-6 hidden md:block">
         <div className="grid gap-3 rounded-3xl border border-border-2 bg-bg-1 p-2 shadow-card md:grid-cols-3">
-          {roleLinks.slice(1).map(({ href, label, role: itemRole, Icon }) => {
+          {roleLinks.slice(1).filter((item) => item.role !== "admin" || role === "admin").map(({ href, label, role: itemRole, Icon }) => {
             const active = role === itemRole;
             return (
               <Link

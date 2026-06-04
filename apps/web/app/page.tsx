@@ -1,549 +1,227 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Bell,
-  BriefcaseBusiness,
-  Building2,
   CheckCircle2,
-  CircleDollarSign,
-  Gauge,
-  HardHat,
-  Home as HomeIcon,
-  LockKeyhole,
-  Mail,
-  Menu,
+  MessageSquareLock,
   ShieldCheck,
-  Star,
-  UserRound,
-  WalletCards,
-  Zap
+  WalletCards
 } from "lucide-react";
 
-const roleCards = [
+const trustItems = [
   {
-    href: "/contractor",
-    label: "Contractor",
-    accent: "success",
-    Icon: HardHat,
-    copy: "Find work, manage escrow, build reputation, and grow.",
-    stats: [
-      ["94%", "Match fit"],
-      ["$621", "Pending"],
-      ["19", "Day streak"]
-    ]
+    title: "Selective identity",
+    body: "Choose how much identity and information you share.",
+    Icon: ShieldCheck
   },
   {
-    href: "/employer",
-    label: "Employer",
-    accent: "gold",
-    Icon: Building2,
-    copy: "Post gigs, match verified operators, and get work done.",
-    stats: [
-      ["24", "Open tasks"],
-      ["19", "Matched"],
-      ["$25K", "Authority"]
-    ]
+    title: "Private job listings",
+    body: "Messages and work details are protected with end-to-end encryption.",
+    Icon: MessageSquareLock
   },
   {
-    href: "/admin",
-    label: "Admin",
-    accent: "purple",
-    Icon: ShieldCheck,
-    copy: "Manage platform health, revenue, risk, and compliance.",
-    stats: [
-      ["$1.84M", "Gross volume"],
-      ["8.2%", "Take rate"],
-      ["312K", "Escrow float"]
-    ]
+    title: "Secure payments",
+    body: "Structured agreements and secure payment flows are built into the engagement process.",
+    Icon: WalletCards
+  },
+  {
+    title: "Trusted coordination",
+    body: "Coordinate sensitive work privately with contributors and hiring teams.",
+    Icon: CheckCircle2
   }
 ] as const;
 
-const accentStyles = {
-  success: {
-    text: "text-success",
-    border: "border-success/25",
-    bg: "bg-success/10",
-    glow: "shadow-green-glow"
-  },
-  gold: {
-    text: "text-gold-primary",
-    border: "border-gold-primary/25",
-    bg: "bg-gold-primary/10",
-    glow: "shadow-gold-glow"
-  },
-  purple: {
-    text: "text-analytics-purple",
-    border: "border-analytics-purple/25",
-    bg: "bg-analytics-purple/10",
-    glow: "shadow-purple-glow"
-  }
-};
-
-const topNavItems = [
-  { href: "/", label: "Home", Icon: HomeIcon, tone: "gold" },
-  { href: "/contractor", label: "Contractor", Icon: HardHat, tone: "success" },
-  { href: "/employer", label: "Employer", Icon: Building2, tone: "gold" },
-  { href: "/admin", label: "Admin", Icon: UserRound, tone: "purple" }
-] as const;
-
-const featureItems = [
-  { title: "Pseudonymous by default", body: "Zero-knowledge identity with selective disclosure.", Icon: ShieldCheck, tone: "success" },
-  { title: "End-to-end encrypted", body: "Messages, files, and data protected at all times.", Icon: LockKeyhole, tone: "gold" },
-  { title: "Protected payments", body: "Escrow, multi-rail payouts, and dispute resolution.", Icon: WalletCards, tone: "purple" },
-  { title: "Reputation that travels", body: "Portable reputation across roles and regions.", Icon: Star, tone: "info" }
-] as const;
-
-const bottomFeatureItems = [
-  { title: "Built for privacy", body: "Minimal data, maximum control", Icon: LockKeyhole },
-  { title: "Secure by design", body: "Encryption at every layer", Icon: ShieldCheck },
-  { title: "Multi-rail payments", body: "Fiat, stablecoin, and more", Icon: WalletCards },
-  { title: "Dispute protection", body: "Fair, fast, and transparent", Icon: CheckCircle2 }
+const focusAreas = [
+  "Writing and Reporting",
+  "Media and Production",
+  "Research, Analysis, and Advisory",
+  "Logistics and Transport",
+  "Local Sourcing and Fixer Work",
+  "Security Coordination",
+  "Executive Assistance and Coordination",
+  "Events and Staffing",
+  "Technical Support and Advisory",
+  "Custom"
 ] as const;
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#070809] pb-24 text-white md:pb-8">
-      <div className="mx-auto max-w-[1480px] p-3 md:p-4">
-        <div className="grid gap-4 xl:grid-cols-[1fr_520px]">
-          <section className="rounded-2xl border border-border-2 bg-bg-1/95 p-4 shadow-card md:p-6">
-            <ShowcaseHeader />
-
-            <div className="mt-8 grid gap-6 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
-              <div>
-                <p className="wm-label text-gold-primary">Encrypted labor marketplace</p>
-                <h1 className="wm-heading mt-4 max-w-[620px] text-[42px] font-bold leading-[1.02] text-white md:text-[56px]">
-                  One Mesh. Three Command Surfaces.
-                </h1>
-                <p className="mt-5 max-w-lg text-base leading-7 text-text-secondary">
-                  Role-separated experiences for contractors, employers, and admins. Private, secure, and built for real work.
-                </p>
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Link href="/contractor" className="wm-button-primary">
-                    Get Started
-                    <ArrowRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-                  </Link>
-                  <Link href="#how-it-works" className="wm-button-secondary">
-                    <CircleDollarSign className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-                    How it works
-                  </Link>
-                </div>
-              </div>
-
-              <div className="grid gap-3 md:grid-cols-3">
-                {roleCards.map((role) => (
-                  <RoleCard key={role.label} {...role} />
-                ))}
-              </div>
-            </div>
-
-            <FeatureStrip />
-          </section>
-
-          <section className="rounded-2xl border border-border-2 bg-bg-1/95 p-4 shadow-card md:p-6">
-            <ContractorPreview />
-          </section>
-        </div>
-
-        <div className="mt-4 grid gap-4 xl:grid-cols-[.95fr_1.45fr_.95fr]">
-          <EmployerMiniConsole />
-          <AdminAnalyticsPanel />
-          <RiskTrustPanel />
-        </div>
-
-        <BottomFeatureBand />
-      </div>
-    </main>
-  );
-}
-
-function ShowcaseHeader() {
-  return (
-    <header className="flex flex-wrap items-center justify-between gap-4">
-      <Link href="/" className="flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-gold-primary/30 bg-gold-primary/10 text-gold-primary shadow-gold-glow">
-          <ShieldCheck className="h-6 w-6" strokeWidth={1.75} aria-hidden="true" />
-        </span>
-        <span className="wm-heading text-xl font-bold tracking-tight">WORKMESH</span>
-      </Link>
-
-      <nav className="mx-auto hidden items-center gap-7 lg:flex">
-        {topNavItems.map(({ href, label, Icon, tone }) => (
-          <Link
-            key={label}
-            href={href}
-            className={`relative flex items-center gap-2 pb-3 text-sm font-semibold ${
-              tone === "success" ? "text-success" : tone === "purple" ? "text-analytics-purple" : "text-white"
-            }`}
-          >
-            <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-            {label}
-            {href === "/" ? <span className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-gold-primary shadow-gold-glow" /> : null}
+    <main className="min-h-screen bg-[linear-gradient(180deg,#F8FAFC_0%,#FFFFFF_32rem,#F8FAFC_100%)] text-[#111827]">
+      <header className="sticky top-0 z-50 bg-[#F8FAFC]/86 backdrop-blur-xl">
+        <div className="mx-auto flex min-h-16 max-w-[1200px] items-center justify-between gap-4 px-5 sm:px-6">
+          <Link href="/" className="flex min-h-11 items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#EDE9FE] text-[#4F46E5]">
+              <ShieldCheck className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+            </span>
+            <span className="leading-none">
+              <span className="block text-base font-semibold text-[#111827]">Relai</span>
+              <span className="hidden text-xs text-[#667085] sm:block">Private beta</span>
+            </span>
           </Link>
-        ))}
-      </nav>
 
-      <div className="flex items-center gap-3">
-        <button className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-border-2 bg-bg-2 text-white">
-          <Bell className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-          <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gold-primary text-[0.65rem] font-bold text-bg-0">3</span>
-        </button>
-        <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-border-2 bg-bg-2 text-text-secondary">
-          <UserRound className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-        </button>
-      </div>
-    </header>
-  );
-}
+          <nav className="hidden items-center gap-8 text-sm font-medium text-[#667085] md:flex">
+            <Link href="#trust" className="transition hover:text-[#4F46E5]">Trust</Link>
+            <Link href="#focus" className="transition hover:text-[#4F46E5]">Who it is for</Link>
+            <Link href="#privacy" className="transition hover:text-[#4F46E5]">Privacy</Link>
+          </nav>
 
-function RoleCard({
-  href,
-  label,
-  accent,
-  Icon,
-  copy,
-  stats
-}: {
-  href: string;
-  label: string;
-  accent: keyof typeof accentStyles;
-  Icon: typeof HardHat;
-  copy: string;
-  stats: readonly (readonly [string, string])[];
-}) {
-  const style = accentStyles[accent];
+          <Link href="/auth/login" className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#E5E7EB] bg-white px-5 text-sm font-semibold text-[#111827] shadow-[0_8px_24px_rgba(17,24,39,0.05)] transition hover:-translate-y-0.5 hover:border-[#7C5CFF]">
+            Sign in
+          </Link>
+        </div>
+      </header>
 
-  return (
-    <Link href={href} className={`rounded-2xl border ${style.border} bg-bg-2/90 p-4 shadow-card transition hover:-translate-y-0.5 hover:bg-bg-3`}>
-      <div className={`mx-auto flex h-16 w-16 items-center justify-center rounded-3xl border ${style.border} ${style.bg} ${style.text} ${style.glow}`}>
-        <Icon className="h-9 w-9" strokeWidth={1.75} aria-hidden="true" />
-      </div>
-      <h2 className={`wm-heading mt-5 text-center text-lg font-bold ${style.text}`}>{label}</h2>
-      <p className="mx-auto mt-3 min-h-[66px] max-w-[170px] text-center text-sm leading-6 text-text-secondary">{copy}</p>
-      <div className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl border border-border-2 bg-bg-1 px-3 py-2 text-sm font-semibold text-white">
-        Enter console
-        <ArrowRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-      </div>
-      <div className="mt-4 grid grid-cols-3 gap-2 border-t border-border-2 pt-3">
-        {stats.map(([value, statLabel]) => (
-          <div key={statLabel} className="text-center">
-            <p className="wm-metric text-sm font-bold text-white">{value}</p>
-            <p className="mt-1 text-[0.62rem] text-text-muted">{statLabel}</p>
-          </div>
-        ))}
-      </div>
-    </Link>
-  );
-}
+      <section className="mx-auto max-w-[1200px] px-5 pb-10 pt-14 text-center sm:px-6 lg:pb-12 lg:pt-16">
+        <div className="mx-auto max-w-4xl">
+          <p className="text-sm font-semibold tracking-wide text-[#4F46E5]">Private beta</p>
+          <h1 className="mx-auto mt-5 max-w-4xl text-[42px] font-semibold leading-[1.04] text-[#111827] sm:text-[64px] lg:text-[76px]">
+            Secure hiring for trusted work.
+          </h1>
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-[#475467] sm:text-xl">
+            Coordinate sensitive work privately and securely. Relai helps people create trusted agreements, communicate safely, and move work forward with confidence.
+          </p>
 
-function FeatureStrip() {
-  return (
-    <div id="how-it-works" className="mt-8 grid gap-3 rounded-2xl border border-border-2 bg-bg-2/85 p-4 md:grid-cols-4">
-      {featureItems.map(({ title, body, Icon, tone }) => (
-        <div key={title} className="flex items-center gap-3">
-          <span
-            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border ${
-              tone === "success"
-                ? "border-success/20 bg-success/10 text-success"
-                : tone === "purple"
-                  ? "border-analytics-purple/20 bg-analytics-purple/10 text-analytics-purple"
-                  : tone === "info"
-                    ? "border-info/20 bg-info/10 text-info"
-                    : "border-gold-primary/20 bg-gold-primary/10 text-gold-primary"
-            }`}
-          >
-            <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
-          </span>
-          <div>
-            <p className="font-semibold text-white">{title}</p>
-            <p className="mt-1 text-xs leading-5 text-text-secondary">{body}</p>
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link href="/auth/register" className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#4F46E5] px-7 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(79,70,229,0.22)] transition hover:-translate-y-0.5 hover:bg-[#7C5CFF]">
+              Join private beta
+              <ArrowRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+            </Link>
+            <Link href="#focus" className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#E5E7EB] bg-white px-7 text-sm font-semibold text-[#4F46E5] transition hover:-translate-y-0.5 hover:border-[#7C5CFF]">
+              See use cases
+            </Link>
           </div>
         </div>
-      ))}
-    </div>
-  );
-}
 
-function ContractorPreview() {
-  return (
-    <div>
-      <div className="mb-5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Menu className="h-5 w-5 text-text-secondary" strokeWidth={1.75} aria-hidden="true" />
-          <p className="wm-label text-success">Contractor dashboard</p>
+        <div className="mx-auto mt-12 grid max-w-3xl gap-4 text-sm text-[#667085] sm:grid-cols-3">
+          <p><span className="font-semibold text-[#111827]">Invite-only</span> access</p>
+          <p><span className="font-semibold text-[#111827]">Encrypted</span> communication</p>
+          <p><span className="font-semibold text-[#111827]">Selective</span> disclosure</p>
         </div>
-        <div className="flex gap-3 text-text-secondary">
-          <Mail className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
-          <UserRound className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
-        </div>
-      </div>
 
-      <div className="rounded-2xl border border-border-2 bg-bg-2 p-4 shadow-card">
-        <div className="flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-gold-primary/30 bg-gold-primary/10 text-gold-primary shadow-gold-glow">K</div>
-          <div className="min-w-0 flex-1">
-            <p className="wm-heading truncate text-xl font-bold">Operator K-914</p>
-            <div className="mt-1 flex items-center gap-2 text-sm text-success">
-              <span className="h-2 w-2 rounded-full bg-success" />
-              Online
+        <div className="relative mx-auto mt-12 h-[300px] max-w-[920px] overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,#EDE9FE_0%,#FFFFFF_45%,#E6F7F5_100%)] shadow-[0_28px_80px_rgba(79,70,229,0.14)] sm:h-[360px]">
+          <div className="absolute -left-20 bottom-[-7rem] h-72 w-72 rounded-[4rem] bg-white/60 rotate-45" />
+          <div className="absolute -right-16 bottom-[-6rem] h-80 w-80 rounded-[4rem] bg-[#EDE9FE]/70 -rotate-45" />
+          <div className="absolute left-1/2 top-10 w-[min(82%,38rem)] -translate-x-1/2 rounded-[2rem] border border-white/80 bg-white/82 p-5 text-left shadow-[0_24px_60px_rgba(17,24,39,0.16)] backdrop-blur">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">Secure request</p>
+                <h2 className="mt-2 text-xl font-semibold text-[#111827]">Field research support</h2>
+              </div>
+              <span className="rounded-full bg-[#EDE9FE] px-3 py-1 text-xs font-semibold text-[#4F46E5]">Protected</span>
             </div>
-            <p className="mt-1 text-xs text-text-secondary">Anonymous contractor</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl bg-[#F8FAFC] p-4">
+                <p className="text-xs text-[#667085]">Agreement</p>
+                <p className="mt-1 font-semibold text-[#111827]">In review</p>
+              </div>
+              <div className="rounded-2xl bg-[#F8FAFC] p-4">
+                <p className="text-xs text-[#667085]">Messages</p>
+                <p className="mt-1 font-semibold text-[#111827]">Encrypted</p>
+              </div>
+              <div className="rounded-2xl bg-[#F8FAFC] p-4">
+                <p className="text-xs text-[#667085]">Payment</p>
+                <p className="mt-1 font-semibold text-[#111827]">Ready</p>
+              </div>
+            </div>
           </div>
-          <div className="hidden rounded-xl border border-border-2 bg-bg-1 px-3 py-2 text-right sm:block">
-            <p className="text-xs font-semibold text-gold-primary">Elite operator</p>
-            <p className="wm-metric mt-1 text-xs text-white">Level 5</p>
+          <div className="absolute bottom-8 left-8 hidden rounded-3xl bg-white px-5 py-4 text-left shadow-[0_18px_50px_rgba(17,24,39,0.12)] sm:block">
+            <p className="text-xs font-semibold text-[#14B8A6]">Selective identity</p>
+            <p className="mt-1 text-sm text-[#475467]">Share details after trust is earned.</p>
           </div>
-        </div>
-        <div className="mt-4 h-2 overflow-hidden rounded-full bg-bg-3">
-          <div className="h-full w-[84%] rounded-full bg-gold-primary" />
-        </div>
-      </div>
-
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <MiniStat label="Ready now" value="On" tone="success" Icon={Zap} />
-        <MiniStat label="Escrow balance" value="$621" tone="gold" Icon={WalletCards} />
-      </div>
-
-      <FeaturedGig />
-      <PhoneFrame />
-    </div>
-  );
-}
-
-function MiniStat({ label, value, tone, Icon }: { label: string; value: string; tone: "success" | "gold"; Icon: typeof Zap }) {
-  return (
-    <div className="rounded-2xl border border-border-2 bg-bg-2 p-4">
-      <p className="text-xs text-text-muted">{label}</p>
-      <div className="mt-2 flex items-center justify-between">
-        <p className={`wm-metric text-2xl font-semibold ${tone === "success" ? "text-success" : "text-gold-primary"}`}>{value}</p>
-        <Icon className={`h-5 w-5 ${tone === "success" ? "text-success" : "text-gold-primary"}`} strokeWidth={1.75} aria-hidden="true" />
-      </div>
-    </div>
-  );
-}
-
-function FeaturedGig() {
-  return (
-    <div className="mt-4 rounded-2xl border border-border-2 bg-bg-2 p-4 shadow-card">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="wm-label text-text-muted">Featured gig</p>
-          <h3 className="wm-heading mt-2 text-lg font-bold">Night dock unload, aisle 4-6</h3>
-          <p className="mt-1 text-sm text-text-muted">Harbor Supply Node</p>
-        </div>
-        <span className="rounded-lg border border-gold-primary/30 bg-gold-primary/10 px-2 py-1 font-mono text-[0.65rem] text-gold-primary">Escrow</span>
-      </div>
-      <div className="mt-4 grid grid-cols-3 divide-x divide-border-2 border-y border-border-2 py-3">
-        <Cell label="Range" value="1.2 mi" />
-        <Cell label="Window" value="21:00" padded />
-        <Cell label="Pay" value="$148" tone="success" padded />
-      </div>
-      <SurgeBars />
-    </div>
-  );
-}
-
-function Cell({ label, value, tone, padded }: { label: string; value: string; tone?: "success"; padded?: boolean }) {
-  return (
-    <div className={padded ? "px-3" : ""}>
-      <p className="text-xs text-text-muted">{label}</p>
-      <p className={`wm-metric mt-1 text-sm font-semibold ${tone === "success" ? "text-success" : "text-white"}`}>{value}</p>
-    </div>
-  );
-}
-
-function SurgeBars() {
-  const bars = [12, 18, 10, 24, 30, 36, 22, 18, 42, 48, 34, 26, 38, 55, 71, 45, 31, 42, 58, 84, 64, 39, 52, 73, 60, 44];
-  return (
-    <>
-      <div className="mt-4 flex items-end gap-1">
-        {bars.map((height, index) => (
-          <span key={`${height}-${index}`} className="w-1 flex-1 rounded-t bg-gold-primary" style={{ height: `${Math.max(4, height / 3)}px`, opacity: index < 4 ? 0.45 : 1 }} />
-        ))}
-      </div>
-      <div className="mt-2 flex justify-between">
-        <span className="wm-label text-gold-primary">Surge</span>
-        <span className="wm-label text-gold-primary">High demand</span>
-      </div>
-    </>
-  );
-}
-
-function PhoneFrame() {
-  return (
-    <div className="pointer-events-none mx-auto mt-5 hidden max-w-[270px] rounded-[42px] border border-white/20 bg-black p-2 shadow-card lg:block">
-      <div className="rounded-[34px] border border-border-2 bg-bg-1 p-3">
-        <div className="mb-3 flex items-center justify-between text-[0.65rem] text-white">
-          <span>9:01</span>
-          <span>● ●</span>
-        </div>
-        <p className="wm-heading text-sm font-bold">WORKMESH</p>
-        <p className="wm-label mt-3 text-success">Contractor</p>
-        <div className="mt-3 rounded-2xl bg-bg-2 p-3">
-          <p className="font-semibold">Operator K-914</p>
-          <p className="mt-1 text-xs text-success">● Online</p>
-          <div className="mt-3 h-1.5 rounded-full bg-bg-3">
-            <div className="h-full w-[84%] rounded-full bg-gold-primary" />
+          <div className="absolute bottom-8 right-8 hidden rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#111827] shadow-[0_18px_50px_rgba(17,24,39,0.12)] sm:block">
+            Secure payments active
           </div>
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          <div className="rounded-xl bg-bg-2 p-2 text-xs">Ready<br /><span className="text-success">On</span></div>
-          <div className="rounded-xl bg-bg-2 p-2 text-xs">Escrow<br /><span className="text-gold-primary">$621</span></div>
-        </div>
-        <div className="mt-3 rounded-2xl bg-bg-2 p-3 text-xs">
-          <p className="font-semibold">Night dock unload</p>
-          <p className="mt-2 text-success">$148</p>
-          <SurgeBars />
-        </div>
-      </div>
-    </div>
-  );
-}
+      </section>
 
-function EmployerMiniConsole() {
-  return (
-    <section className="rounded-2xl border border-border-2 bg-bg-1 p-4 shadow-card">
-      <PanelHeader title="Employer console" tone="gold" Icon={Menu} />
-      <div className="mt-4 rounded-2xl border border-border-2 bg-bg-2 p-4">
-        <p className="wm-label text-text-muted">Post and manage work</p>
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          <MiniBox value="24" label="Open tasks" />
-          <MiniBox value="19" label="Matched" />
-          <MiniBox value="$25K" label="Spend authority" />
-          <MiniBox value="2" label="Active escrows" />
-        </div>
-      </div>
-      <div className="mt-3 grid gap-2">
-        {["Facilities repair - urgent", "Equipment delivery", "Site inspection - weekend"].map((item, index) => (
-          <div key={item} className="flex items-center justify-between rounded-xl bg-bg-2 px-3 py-2">
-            <span className="text-sm text-text-secondary">{item}</span>
-            <span className={index === 0 ? "text-success" : index === 1 ? "text-warning" : "text-info"}>{index === 0 ? "Active" : index === 1 ? "In progress" : "Open"}</span>
+      <section id="trust">
+        <div className="mx-auto max-w-[1200px] px-5 py-14 sm:px-6 lg:py-18">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold text-[#4F46E5]">Trust by design</p>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#111827] sm:text-5xl">Built for sensitive coordination.</h2>
           </div>
-        ))}
-      </div>
-      <Link href="/employer" className="mt-3 flex min-h-11 items-center justify-center rounded-2xl bg-gold-primary font-semibold text-bg-0">
-        Post a new gig
-      </Link>
-    </section>
-  );
-}
 
-function AdminAnalyticsPanel() {
-  return (
-    <section className="rounded-2xl border border-border-2 bg-bg-1 p-4 shadow-card">
-      <PanelHeader title="Admin analytics" tone="purple" Icon={Menu} />
-      <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <AdminMetric value="$1.84M" label="Gross volume" change="+18.4%" tone="success" />
-        <AdminMetric value="8.2%" label="Take rate" change="+0.6 pts" tone="success" />
-        <AdminMetric value="$312K" label="Escrow float" change="+12.7%" tone="success" />
-        <AdminMetric value="132" label="Disputes" change="-6.1%" tone="danger" />
-      </div>
-      <div className="mt-4 rounded-2xl border border-border-2 bg-bg-2 p-4">
-        <div className="flex items-center justify-between">
-          <p className="wm-label text-text-muted">Gross volume over time</p>
-          <span className="wm-chip border-analytics-purple/20 bg-analytics-purple/10 text-analytics-purple">$312K Sat</span>
-        </div>
-        <svg viewBox="0 0 520 210" className="mt-4 h-56 w-full" role="img" aria-label="Revenue line chart">
-          {[40, 82, 124, 166].map((y) => <line key={y} x1="0" x2="520" y1={y} y2={y} stroke="rgba(255,255,255,.055)" />)}
-          <polyline
-            points="0,160 45,126 80,98 120,132 164,80 205,42 252,102 300,126 344,82 390,58 438,118 486,74 520,92"
-            fill="none"
-            stroke="#8B5CF6"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
-    </section>
-  );
-}
-
-function RiskTrustPanel() {
-  return (
-    <section className="rounded-2xl border border-border-2 bg-bg-1 p-4 shadow-card">
-      <PanelHeader title="Risk & trust" tone="success" Icon={ShieldCheck} />
-      <div className="mt-5 rounded-2xl border border-border-2 bg-bg-2 p-5">
-        <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-full border-[18px] border-success shadow-green-glow">
-          <div className="text-center">
-            <p className="wm-metric text-4xl font-bold">98%</p>
-            <p className="text-sm text-text-secondary">Trust health</p>
+          <div className="mt-10 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+            {trustItems.map(({ title, body, Icon }) => (
+              <article key={title}>
+                <Icon className="h-5 w-5 text-[#4F46E5]" strokeWidth={1.75} aria-hidden="true" />
+                <h3 className="mt-5 text-lg font-semibold text-[#111827]">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#667085]">{body}</p>
+              </article>
+            ))}
           </div>
         </div>
-        <div className="mt-5 grid gap-3">
-          <RiskRow label="Low risk" value="92%" color="bg-success" />
-          <RiskRow label="Med risk" value="6%" color="bg-gold-primary" />
-          <RiskRow label="High risk" value="2%" color="bg-danger" />
-        </div>
-      </div>
-      <Link href="/admin#operations-queues" className="mt-4 flex min-h-12 items-center justify-between rounded-2xl border border-border-2 bg-bg-2 px-4 font-semibold">
-        View risk center
-        <ArrowRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-      </Link>
-    </section>
-  );
-}
+      </section>
 
-function BottomFeatureBand() {
-  return (
-    <section className="mt-4 grid gap-4 lg:grid-cols-[1fr_.38fr]">
-      <div className="grid gap-3 rounded-2xl bg-white p-5 text-bg-0 md:grid-cols-4">
-        {bottomFeatureItems.map(({ title, body, Icon }) => (
-          <div key={title} className="flex gap-3">
-            <Icon className="mt-1 h-6 w-6 text-bg-3" strokeWidth={1.75} aria-hidden="true" />
+      <section id="focus" className="px-5 py-8 sm:px-6 lg:py-10">
+        <div className="mx-auto max-w-[1200px] rounded-[2rem] bg-[linear-gradient(135deg,#EDE9FE_0%,#FFFFFF_52%,#FFF7E0_100%)] px-5 py-12 shadow-[0_24px_70px_rgba(17,24,39,0.06)] sm:px-8 lg:px-10 lg:py-16">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div>
-              <p className="font-semibold">{title}</p>
-              <p className="text-sm text-bg-3">{body}</p>
+              <p className="text-sm font-semibold text-[#4F46E5]">Who uses Relai</p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#111827] sm:text-5xl">Built for trusted field and remote work.</h2>
+              <p className="mt-5 text-base leading-7 text-[#344054]">
+                Relai supports focused coordination domains, not a public job board taxonomy. Choose the area that best describes the work you coordinate or support.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              {focusAreas.map((area) => (
+                <div key={area} className="rounded-2xl border border-[#E5E7EB] bg-white px-4 py-4 text-sm font-medium text-[#344054] shadow-[0_10px_28px_rgba(17,24,39,0.035)]">
+                  {area}
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-      <div className="rounded-2xl border border-analytics-purple/20 bg-analytics-purple/10 p-5 text-white shadow-purple-glow">
-        <p className="wm-label text-analytics-purple">One platform. Three rules.</p>
-        <p className="mt-3 text-sm leading-6 text-text-secondary">Every action protected. Every role empowered. Built for the future of work.</p>
-      </div>
-    </section>
-  );
-}
+        </div>
+      </section>
 
-function PanelHeader({ title, tone, Icon }: { title: string; tone: "gold" | "purple" | "success"; Icon: typeof Menu }) {
-  return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <Icon className="h-5 w-5 text-text-secondary" strokeWidth={1.75} aria-hidden="true" />
-        <p className={`wm-label ${tone === "gold" ? "text-gold-primary" : tone === "purple" ? "text-analytics-purple" : "text-success"}`}>{title}</p>
-      </div>
-      <Mail className="h-5 w-5 text-text-secondary" strokeWidth={1.75} aria-hidden="true" />
-    </div>
-  );
-}
+      <section id="privacy">
+        <div className="mx-auto grid max-w-[1200px] gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[1fr_1fr] lg:py-18">
+          <div>
+            <p className="text-sm font-semibold text-[#4F46E5]">Privacy-first coordination</p>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#111827] sm:text-5xl">Share less until trust is earned.</h2>
+          </div>
+          <div className="space-y-6 text-base leading-8 text-[#344054]">
+            <p>
+              Relai is designed for work that needs discretion, clarity, and trust. Start with only the information needed to evaluate a request.
+            </p>
+            <p>
+              As an engagement becomes more concrete, participants can choose what to reveal, when to reveal it, and who can see it.
+            </p>
+          </div>
+        </div>
+      </section>
 
-function MiniBox({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-xl border border-border-2 bg-bg-1 p-3">
-      <p className="wm-metric text-xl font-bold">{value}</p>
-      <p className="mt-1 text-xs text-text-muted">{label}</p>
-    </div>
-  );
-}
+      <section className="px-5 py-8 text-white sm:px-6 lg:py-10">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-8 rounded-[2rem] bg-[#4F46E5] px-6 py-12 shadow-[0_24px_70px_rgba(79,70,229,0.22)] sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
+          <div>
+            <p className="text-sm font-semibold text-[#FBBF24]">Private beta</p>
+            <h2 className="mt-3 max-w-2xl text-3xl font-semibold leading-tight sm:text-5xl">Start with a private account.</h2>
+            <p className="mt-4 max-w-xl text-base leading-7 text-[#EDE9FE]">
+              After signup, choose whether you are creating a contributor profile or an employer profile.
+            </p>
+          </div>
+          <Link href="/auth/register" className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#4F46E5] transition hover:-translate-y-0.5 hover:bg-[#EDE9FE]">
+            Request access
+            <ArrowRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
 
-function AdminMetric({ value, label, change, tone }: { value: string; label: string; change: string; tone: "success" | "danger" }) {
-  return (
-    <div className="rounded-xl border border-border-2 bg-bg-2 p-3">
-      <p className="wm-metric text-2xl font-bold">{value}</p>
-      <p className="mt-1 text-xs text-text-muted">{label}</p>
-      <p className={`mt-2 text-xs ${tone === "success" ? "text-success" : "text-danger"}`}>{change}</p>
-    </div>
-  );
-}
+      <footer>
+        <div className="mx-auto flex max-w-[1120px] flex-col gap-4 px-5 py-8 text-sm text-[#667085] sm:px-6 md:flex-row md:items-center md:justify-between">
+          <p>Relai</p>
+          <div className="flex gap-5">
+            <Link href="/auth/login" className="hover:text-[#111827]">Sign in</Link>
+            <Link href="/contractor" className="hover:text-[#111827]">Contributor app</Link>
+            <Link href="/employer" className="hover:text-[#111827]">Employer app</Link>
+          </div>
+        </div>
+      </footer>
 
-function RiskRow({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="flex items-center gap-2 text-sm text-text-secondary">
-        <span className={`h-2.5 w-2.5 rounded-full ${color}`} />
-        {label}
-      </span>
-      <span className="wm-metric text-sm font-semibold text-white">{value}</span>
-    </div>
+      <nav className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-2 gap-2 rounded-full border border-[#E5E7EB] bg-white/95 p-2 shadow-[0_12px_36px_rgba(17,24,39,0.10)] backdrop-blur md:hidden">
+        <Link href="/auth/register" className="flex min-h-12 items-center justify-center rounded-full bg-[#4F46E5] text-sm font-semibold text-white">Join beta</Link>
+        <Link href="#focus" className="flex min-h-12 items-center justify-center rounded-full bg-[#EDE9FE] text-sm font-semibold text-[#4F46E5]">Use cases</Link>
+      </nav>
+    </main>
   );
 }
